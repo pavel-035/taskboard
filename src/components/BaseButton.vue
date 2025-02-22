@@ -1,13 +1,13 @@
 <template>
   <button
+    v-on="$listeners"
+    v-bind="$attrs"
+
     :class="[
       'base-button',
       `base-button_${variant}`
     ]"
     :style="styleVariables"
-
-    type="button"
-    @click="$emit('click', $event)"
   >
     <base-icon
       v-if="icon"
@@ -42,6 +42,10 @@ export default {
       type: String,
       default: '#000'
     },
+    colorHover: {
+      type: String,
+      default: '#000'
+    },
     variant: {
       type: String,
       default: 'default',
@@ -51,7 +55,8 @@ export default {
   computed: {
     styleVariables () {
       return {
-        '--color': this.color
+        '--color': this.color,
+        '--color-hover': this.colorHover
       }
     }
   }
@@ -77,6 +82,8 @@ export default {
   transition: box-shadow ease-in-out .4s;
 
   &:hover {
+    color: var(--color-hover);
+
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.06);
     transition: box-shadow ease-in-out .3s;
   }
@@ -97,9 +104,8 @@ export default {
     letter-spacing: 0;
   }
   &__icon {
+    font-size: 0;
     margin-top: 3px;
-    fill: currentColor;
-    stroke: currentColor;
   }
 }
 </style>
