@@ -30,8 +30,7 @@ export default {
   name: 'BaseDropdownMenu',
   data () {
     return {
-      isOpenMenu: false,
-      hideQueue: []
+      isOpenMenu: false
     }
   },
   methods: {

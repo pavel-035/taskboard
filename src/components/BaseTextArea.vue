@@ -4,9 +4,8 @@
       <textarea
         ref="textareaRef"
         v-model="localValue"
-        @input="resizeTextarea"
-
         v-bind="$attrs"
+
         class="base-textarea__field"
       />
     </div>
@@ -28,6 +27,7 @@ export default {
         return this.value
       },
       set (value) {
+        this.resizeTextarea()
         this.$emit('input', value)
       }
     }
@@ -39,6 +39,11 @@ export default {
 
         textareaElement.style.height = 'auto' // Сбрасываем высоту
         textareaElement.style.height = textareaElement.scrollHeight + 'px' // Устанавливаем новую высоту
+      })
+    },
+    focus () {
+      this.$nextTick(() => {
+        this.$refs.textareaRef.focus()
       })
     }
   }

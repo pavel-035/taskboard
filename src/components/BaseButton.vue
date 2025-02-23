@@ -3,8 +3,8 @@
     v-on="$listeners"
     v-bind="$attrs"
 
+    class="base-button"
     :class="[
-      'base-button',
       `base-button_${variant}`
     ]"
     :style="styleVariables"
@@ -44,7 +44,7 @@ export default {
     },
     colorHover: {
       type: String,
-      default: '#000'
+      default: null
     },
     variant: {
       type: String,
@@ -56,7 +56,7 @@ export default {
     styleVariables () {
       return {
         '--color': this.color,
-        '--color-hover': this.colorHover
+        '--color-hover': this.colorHover ?? this.color
       }
     }
   }
