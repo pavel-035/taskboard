@@ -1,28 +1,27 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <router-view/>
+
+    <base-alert-bar />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import BaseAlertBar from '@/components/BaseAlertBar.vue'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    BaseAlertBar
+  },
+  created () {
+    this.fetchTasks()
+    this.fetchStates()
+  },
+  methods: {
+    ...mapActions('tasks', ['fetchTasks']),
+    ...mapActions('states', ['fetchStates'])
   }
 }
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
