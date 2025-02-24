@@ -2,13 +2,14 @@
   <div class="home">
     <div class="home__wrapper">
       <board-column
-        v-for="state in getStates"
-        :key="state.id"
+        v-for="status in getStatuses"
+        :key="status.id"
 
-        :label="state.label"
-        :background-color-header="state.color"
+        :status-id="status.id"
+        :label="status.label"
+        :background-color-header="status.color"
 
-        :tasks="getTasksByState(state.id)"
+        :tasks="getTasksByStatuses[status.id]"
         class="home__column"
       />
     </div>
@@ -25,8 +26,8 @@ export default {
     BoardColumn
   },
   computed: {
-    ...mapGetters('tasks', ['getTasksByState']),
-    ...mapGetters('states', ['getStates'])
+    ...mapGetters('tasks', ['getTasksByStatuses']),
+    ...mapGetters('statuses', ['getStatuses'])
   }
 }
 </script>

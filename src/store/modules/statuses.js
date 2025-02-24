@@ -3,27 +3,27 @@ export default {
 
   state: () => {
     return {
-      states: []
+      statuses: []
     }
   },
   mutations: {
-    SET_STATES (state, states) {
-      state.states = states
+    SET_STATUSES (state, statuses) {
+      state.statuses = statuses
     }
   },
   actions: {
-    async fetchStates ({ commit }) {
+    async fetchStatuses ({ commit }) {
       try {
-        const response = await fetch('data/states.json')
-        const states = await response.json()
+        const response = await fetch('data/statuses.json')
+        const statuses = await response.json()
 
-        commit('SET_STATES', states)
+        commit('SET_STATUSES', statuses)
       } catch (error) {
         console.error(error)
       }
     }
   },
   getters: {
-    getStates: state => state.states
+    getStatuses: state => state.statuses
   }
 }
