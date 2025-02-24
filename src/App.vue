@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view/>
+    <template v-if="!isLoad">
+      <router-view/>
+    </template>
 
     <base-alert-bar />
   </div>
@@ -15,13 +17,25 @@ export default {
   components: {
     BaseAlertBar
   },
-  created () {
-    this.fetchTasks()
-    this.fetchStates()
+  data () {
+    return {
+      isLoad: false
+    }
+  },
+  async created () {
+    try {
+      this.isLoad = true
+
+      await this.fetchTasks()
+      await this.fetchStatuses()
+      this.loadTasksByStatuses()
+    } finally {
+      this.isLoad = false
+    }
   },
   methods: {
-    ...mapActions('tasks', ['fetchTasks']),
-    ...mapActions('states', ['fetchStates'])
+    ...mapActions('tasks', ['fetchTasks', 'loadTasksByStatuses']),
+    ...mapActions('statuses', ['fetchStatuses'])
   }
 }
 </script>
