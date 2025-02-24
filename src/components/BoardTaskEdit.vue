@@ -60,11 +60,11 @@ export default {
   },
   methods: {
     save () {
-      this.$emit('input', this.localValue)
+      this.$emit('save', this.localValue)
     },
     cancel () {
       this.localValue = this.value
-      this.$emit('input', this.value)
+      this.$emit('cancel', this.value)
     }
   }
 }
@@ -77,7 +77,11 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    width: 100%;
+
+    padding: 8px;
+    border: 1px solid #3D86F4;
+    border-radius: 4px;
+    background: #FFFFFF;
   }
 }
 </style>
