@@ -17,7 +17,7 @@
           class="board-column__task"
         />
 
-        <base-task-create
+        <board-task-create
           :status-id="statusId"
         />
       </div>
@@ -26,14 +26,14 @@
 </template>
 
 <script>
-import BaseTaskCreate from '@/components/BaseTaskCreate.vue'
+import BoardTaskCreate from '@/components/BoardTaskCreate.vue'
 import BoardTaskContainer from '@/components/BoardTaskContainer.vue'
 
 export default {
   name: 'BoardColumn',
   components: {
     BoardTaskContainer,
-    BaseTaskCreate
+    BoardTaskCreate
   },
   props: {
     statusId: {

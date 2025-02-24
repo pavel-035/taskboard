@@ -27,7 +27,7 @@ import BoardTaskEdit from '@/components/BoardTaskEdit.vue'
 import BaseButton from '@/components/BaseButton.vue'
 
 export default {
-  name: 'BaseTaskCreate',
+  name: 'BoardTaskCreate',
   components: {
     BaseButton,
     BoardTaskEdit
