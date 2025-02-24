@@ -9,27 +9,13 @@
       </div>
 
       <div class="board-column__body">
-        <div
+        <board-task-container
           v-for="task in tasks"
           :key="task.id"
+          :task="task"
 
           class="board-column__task"
-        >
-          <board-task-edit
-            v-if="selectedTask?.id === task.id"
-
-            :value="task.description"
-            @save="saveEdit(task, { description: $event })"
-            @cancel="cancelEdit"
-          />
-          <board-task
-            v-else
-
-            :description="task.description"
-            @edit="taskEdit(task)"
-            @delete="taskDelete(task.id)"
-          />
-        </div>
+        />
 
         <base-task-create
           :status-id="statusId"
@@ -40,17 +26,14 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import BoardTask from '@/components/BoardTask.vue'
-import BoardTaskEdit from '@/components/BoardTaskEdit.vue'
 import BaseTaskCreate from '@/components/BaseTaskCreate.vue'
+import BoardTaskContainer from '@/components/BoardTaskContainer.vue'
 
 export default {
   name: 'BoardColumn',
   components: {
-    BaseTaskCreate,
-    BoardTaskEdit,
-    BoardTask
+    BoardTaskContainer,
+    BaseTaskCreate
   },
   props: {
     statusId: {
@@ -70,41 +53,11 @@ export default {
       required: true
     }
   },
-  data () {
-    return {
-      selectedTask: null
-    }
-  },
   computed: {
     styleVariables () {
       return {
         '--background-color-header': this.backgroundColorHeader
       }
-    }
-  },
-  methods: {
-    ...mapActions('tasks', {
-      ActionEditTask: 'editTask',
-      ActionDeleteTask: 'deleteTask'
-    }),
-
-    taskDelete (id) {
-      this.ActionDeleteTask(id)
-    },
-    taskEdit (task) {
-      this.selectedTask = { ...task }
-    },
-
-    saveEdit (task, editResult) {
-      const resultTask = {}
-
-      this.ActionEditTask({ ...task, ...editResult })
-
-      this.ActionEditTask(resultTask)
-      this.selectedTask = null
-    },
-    cancelEdit () {
-      this.selectedTask = null
     }
   }
 }

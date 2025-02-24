@@ -38,7 +38,7 @@ export default {
   props: {
     value: {
       type: String,
-      required: true
+      default: ''
     },
     isFocused: {
       type: Boolean,

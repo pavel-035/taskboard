@@ -4,8 +4,8 @@
       <board-task-edit
         v-if="isCreate"
 
-        :value="taskDescription"
-        @save="description => save(description)"
+        value=""
+        @save="save"
         @cancel="cancel"
       />
       <base-button
@@ -29,7 +29,8 @@ import BaseButton from '@/components/BaseButton.vue'
 export default {
   name: 'BaseTaskCreate',
   components: {
-    BaseButton, BoardTaskEdit
+    BaseButton,
+    BoardTaskEdit
   },
   props: {
     statusId: {
@@ -39,8 +40,7 @@ export default {
   },
   data () {
     return {
-      isCreate: false,
-      taskDescription: ''
+      isCreate: false
     }
   },
   methods: {
