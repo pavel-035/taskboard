@@ -8,13 +8,18 @@
         <span class="board-column__label">{{ label }}</span>
       </div>
 
-      <div class="board-column__body">
+      <div
+        class="board-column__body"
+        data-js-drag-column-body
+      >
         <board-task-container
           v-for="task in tasks"
           :key="task.id"
           :task="task"
 
           class="board-column__task"
+
+          :data-js-drag-card="task.id"
         />
 
         <board-task-create

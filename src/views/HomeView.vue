@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div class="home__wrapper">
+    <board-draggable-container class="home__wrapper">
       <board-column
         v-for="status in getStatuses"
         :key="status.id"
@@ -11,18 +11,22 @@
 
         :tasks="getTasksByStatuses[status.id]"
         class="home__column"
+
+        :data-js-drag-column="status.id"
       />
-    </div>
+    </board-draggable-container>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import BoardColumn from '@/components/BoardColumn.vue'
+import BoardDraggableContainer from '@/components/BoardDraggableContainer.vue'
 
 export default {
   name: 'HomeView',
   components: {
+    BoardDraggableContainer,
     BoardColumn
   },
   computed: {
