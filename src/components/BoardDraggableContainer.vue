@@ -1,12 +1,14 @@
 <template>
   <div
     ref="draggableContainerRef"
-    class="board-draggable-container">
+    class="board-draggable-container"
+  >
     <slot></slot>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import DragAndDrop from '@/plugins/dragAndDrop'
 
 export default {
@@ -18,10 +20,26 @@ export default {
   },
   mounted () {
     this.dragAndDrop = new DragAndDrop({
-      container: this.$refs.draggableContainerRef
+      container: this.$refs.draggableContainerRef,
+      columnDataAttribute: 'data-draggable-column',
+      cardDataAttribute: 'data-draggable-card',
+      dropCallback: this.onDrop
     })
+  },
+  methods: {
+    ...mapActions('tasks', ['editTask']),
 
-    // await this.dragAndDrop.onUpdateColumns()
+    onDrop (taskId, statusId) {
+      this.editTask({
+        id: taskId,
+        status_id: statusId
+      })
+
+      this.dragAndDrop.update()
+    }
+  },
+  beforeDestroy () {
+    this.dragAndDrop.destroy()
   }
 }
 </script>

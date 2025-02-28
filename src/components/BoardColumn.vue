@@ -18,8 +18,7 @@
           :task="task"
 
           class="board-column__task"
-
-          :data-js-drag-card="task.id"
+          :data-draggable-card="task.id"
         />
 
         <board-task-create

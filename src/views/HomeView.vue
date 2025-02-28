@@ -12,7 +12,7 @@
         :tasks="getTasksByStatuses[status.id]"
         class="home__column"
 
-        :data-js-drag-column="status.id"
+        :data-draggable-column="status.id"
       />
     </board-draggable-container>
   </div>

@@ -57,7 +57,7 @@ export default {
     saveEdit (editResult) {
       const resultTask = {}
 
-      this.ActionEditTask({ ...this.task, ...editResult })
+      this.ActionEditTask(editResult)
 
       this.ActionEditTask(resultTask)
       this.isEdit = false

@@ -76,7 +76,9 @@ export default {
       const tasks = state.tasks
       const taskIndex = tasks.findIndex(item => item.id === newTaskData.id)
 
-      commit('SET_TASK', { taskIndex, task: newTaskData })
+      const merge = { ...tasks[taskIndex], ...newTaskData }
+
+      commit('SET_TASK', { taskIndex, task: merge })
       dispatch('loadTasksByStatuses')
     },
     deleteTask ({ commit, state, dispatch }, taskId) {
