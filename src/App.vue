@@ -26,16 +26,16 @@ export default {
     try {
       this.isLoad = true
 
-      await this.fetchTasks()
-      await this.fetchStatuses()
+      await this.loadTasks()
+      await this.loadStatuses()
       this.loadTasksByStatuses()
     } finally {
       this.isLoad = false
     }
   },
   methods: {
-    ...mapActions('tasks', ['fetchTasks', 'loadTasksByStatuses']),
-    ...mapActions('statuses', ['fetchStatuses'])
+    ...mapActions('tasks', ['loadTasks', 'loadTasksByStatuses']),
+    ...mapActions('statuses', ['loadStatuses'])
   }
 }
 </script>

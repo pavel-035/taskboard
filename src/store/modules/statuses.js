@@ -1,3 +1,5 @@
+import api from '@/api'
+
 export default {
   namespaced: true,
 
@@ -12,15 +14,10 @@ export default {
     }
   },
   actions: {
-    async fetchStatuses ({ commit }) {
-      try {
-        const response = await fetch('data/statuses.json')
-        const statuses = await response.json()
+    async loadStatuses ({ commit }) {
+      const statuses = await api.statuses.fetchStatuses() ?? []
 
-        commit('SET_STATUSES', statuses)
-      } catch (error) {
-        console.error(error)
-      }
+      commit('SET_STATUSES', statuses)
     }
   },
   getters: {

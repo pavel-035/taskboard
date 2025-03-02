@@ -1,3 +1,5 @@
+import api from '@/api'
+
 export default {
   namespaced: true,
 
@@ -26,17 +28,11 @@ export default {
     }
   },
   actions: {
-    async fetchTasks ({ commit }) {
-      try {
-        const response = await fetch('data/tasks.json')
-        const tasks = await response.json()
+    async loadTasks ({ commit }) {
+      const tasks = await api.tasks.fetchTasks()
 
-        commit('SET_TASKS', tasks)
-      } catch (error) {
-        console.error(error)
-      }
+      commit('SET_TASKS', tasks)
     },
-
     loadTasksByStatuses ({ commit, getters, rootGetters }) {
       const statuses = rootGetters['statuses/getStatuses']
       const tasks = getters.getTasks
