@@ -10,8 +10,10 @@ export class Column {
   }
 }
 
-export class ColumnHandler {
+export class ColumnEventHandler {
   constructor (columnElement) {
+    this.columnElement = columnElement
+
     this.mouseEnter = new EventHandler({
       eventType: 'mouseenter',
       element: columnElement,
@@ -23,55 +25,40 @@ export class ColumnHandler {
       element: columnElement,
       handler: (event, callback) => callback(event)
     })
-  }
-}
 
-export class Columns {
-  constructor ({
-    container,
-    columnDataAttribute
-  }) {
-    this.container = container
-    this.columnDataAttribute = columnDataAttribute
+    this.focus = new EventHandler({
+      eventType: 'columnFocus',
+      element: columnElement,
+      handler: (event, callback) => callback(event)
+    })
 
-    this.value = []
-    this.columnInFocus = null
+    this.blur = new EventHandler({
+      eventType: 'columnBlur',
+      element: columnElement,
+      handler: (event, callback) => callback(event)
+    })
+
     this.init()
   }
 
   init () {
-    this.update()
-  }
+    this.mouseEnter.addListener(() => {
+      const columnFocusEvent = new CustomEvent('columnFocus')
 
-  update () {
-    this.value.splice(0, this.value.length)
+      this.columnElement.dispatchEvent(columnFocusEvent)
+    })
 
-    this.fetch()
-  }
+    this.mouseLeave.addListener(() => {
+      const columnFocusEvent = new CustomEvent('columnBlur')
 
-  destroy () {
-    this.value.splice(0, this.value.length)
-  }
-
-  fetch () {
-    const columnsNodeList = this.container.querySelectorAll(`[${this.columnDataAttribute}]`)
-
-    columnsNodeList.forEach((columnNodeElement) => {
-      const column = new Column({
-        id: Number(columnNodeElement.getAttribute(this.columnDataAttribute)),
-        nodeElement: columnNodeElement
-      })
-
-      this.addFocusHandler(column)
-
-      this.value.push(column)
+      this.columnElement.dispatchEvent(columnFocusEvent)
     })
   }
 
-  addFocusHandler (column) {
-    const handler = new ColumnHandler(column.nodeElement)
-
-    handler.mouseEnter.addListener(() => { this.columnInFocus = column })
-    handler.mouseLeave.addListener(() => { this.columnInFocus = null })
+  destroy () {
+    this.mouseLeave.removeListener()
+    this.mouseEnter.removeListener()
+    this.focus.removeListener()
+    this.blur.removeListener()
   }
 }

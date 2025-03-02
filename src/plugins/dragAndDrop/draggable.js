@@ -1,5 +1,6 @@
-import { Card, Cards } from './card'
+import { Card } from './card'
 import { EventHandler } from './eventHandler'
+import { DOMManager } from './DOMManager'
 
 export class DraggableCard extends Card {
   constructor (card) {
@@ -10,7 +11,7 @@ export class DraggableCard extends Card {
   }
 
   init (event) {
-    const { top: y, left: x } = this.getPosition()
+    const { top: y, left: x } = this.getDraggableCardPosition()
 
     this.setMouseOffset(event)
     this.nodeElement = this.nodeElement.cloneNode(true)
@@ -32,18 +33,55 @@ export class DraggableCard extends Card {
   }
 
   setMouseOffset ({ pageX, pageY }) {
-    const { left, top } = this.getPosition()
+    const { left, top } = this.getDraggableCardPosition()
 
     this.mouseOffset.x = pageX - left
     this.mouseOffset.y = pageY - top
   }
 
-  getPosition () {
-    const rect = this.nodeElement.getBoundingClientRect()
+  getDraggableCardPosition () {
+    return DOMManager.getPositionRelativePage(this.nodeElement)
+  }
+}
 
+export class DraggableComponent {
+  constructor ({
+    card
+  }) {
+    this.card = card
+
+    this.draggableCard = null
+    this.draggableCardHandler = null
+  }
+
+  init (event) {
+    this.draggableCard = new DraggableCard(this.card)
+    this.draggableCard.init(event)
+
+    this.draggableCardHandler = new DraggableHandler(document.body)
+    this.draggableCardHandler.mouseMove.addListener((event) => this._onDragMove(event))
+    this.draggableCardHandler.mouseUp.addListener((event) => this._onDragDrop(event))
+  }
+
+  _onDragMove (event) {
+    const mouseOffset = this.draggableCard.mouseOffset
+    const { x, y } = this._getDragPosition(event, mouseOffset)
+
+    this.draggableCard.move(x, y)
+  }
+
+  _onDragDrop () {
+    this.draggableCardHandler.destroy()
+    this.draggableCard.destroy()
+
+    this.draggableCardHandler = null
+    this.draggableCard = null
+  }
+
+  _getDragPosition ({ pageX, pageY }, mouseOffset) {
     return {
-      top: rect.top + window.scrollY,
-      left: rect.left + window.scrollX
+      x: pageX - mouseOffset.x,
+      y: pageY - mouseOffset.y
     }
   }
 }
@@ -81,7 +119,6 @@ export class DraggableHandler {
         callback(event)
       }
     })
-
     this.mouseUp = new EventHandler({
       eventType: 'mouseup',
       element: columnElement,
@@ -94,62 +131,5 @@ export class DraggableHandler {
   destroy () {
     this.mouseMove.removeListener()
     this.mouseUp.removeListener()
-  }
-}
-
-export class DraggableCycle {
-  constructor (draggableCard) {
-    this.draggableCard = draggableCard
-
-    this.draggableCardHandler = null
-  }
-
-  onDragStart (event) {
-    this.draggableCard.init(event)
-    this.draggableCardHandler = new DraggableHandler(document.body)
-
-    this.draggableCardHandler.mouseMove.addListener((event) => this.onDragMove(event))
-    this.draggableCardHandler.mouseUp.addListener((event) => this.onDragDrop(event))
-  }
-
-  onDragMove (event) {
-    const mouseOffset = this.draggableCard.mouseOffset
-    const { x, y } = Draggable.getDragPosition(event, mouseOffset)
-
-    this.draggableCard.move(x, y)
-  }
-
-  onDragDrop () {
-    this.draggableCardHandler.destroy()
-    this.draggableCard.destroy()
-  }
-}
-
-export class Draggable {
-  constructor ({
-    cards
-  }) {
-    if (!(cards instanceof Cards)) throw new Error('cards must implement Cards')
-
-    this.cards = cards
-
-    this.draggableCard = null
-    this.draggableCycle = null
-  }
-
-  launch (event, cardNodeElement) {
-    const card = this.cards.findCardByNodeElement(cardNodeElement)
-
-    this.draggableCard = new DraggableCard(card)
-    this.draggableCycle = new DraggableCycle(this.draggableCard)
-
-    this.draggableCycle.onDragStart(event)
-  }
-
-  static getDragPosition ({ pageX, pageY }, mouseOffset) {
-    return {
-      x: pageX - mouseOffset.x,
-      y: pageY - mouseOffset.y
-    }
   }
 }

@@ -58,7 +58,7 @@ class Card {
     this.id = Number(cardElement.getAttribute(CARD_DATA_ATTRIBUTE_NAME))
   }
 
-  getPosition () {
+  getDraggableCardPosition () {
     const rect = this.element.getBoundingClientRect()
 
     return {

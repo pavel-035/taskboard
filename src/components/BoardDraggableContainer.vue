@@ -23,19 +23,18 @@ export default {
       container: this.$refs.draggableContainerRef,
       columnDataAttribute: 'data-draggable-column',
       cardDataAttribute: 'data-draggable-card',
-      dropCallback: this.onDrop
+      onDrop: this.onDrop
     })
   },
   methods: {
     ...mapActions('tasks', ['editTask']),
 
-    onDrop (taskId, statusId) {
-      this.editTask({
+    async onDrop (taskId, statusId, queuePosition) {
+      await this.editTask({
         id: taskId,
-        status_id: statusId
+        status_id: statusId,
+        queue_position: queuePosition
       })
-
-      this.dragAndDrop.update()
     }
   },
   beforeDestroy () {

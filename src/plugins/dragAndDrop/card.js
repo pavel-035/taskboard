@@ -1,4 +1,3 @@
-import { Columns } from './column'
 import { EventHandler } from './eventHandler'
 
 export class Card {
@@ -13,82 +12,76 @@ export class Card {
     this.id = id
     this.nodeElement = nodeElement
   }
+
+  isDisable (isEditValue) {
+    if (isEditValue) {
+      CardStyleManager.setTransparent(this.nodeElement)
+    } else {
+      CardStyleManager.dropTransparent(this.nodeElement)
+    }
+  }
 }
 
-export class CardHandler {
+export class CardEventHandlers {
   constructor (container, cardDataAttribute) {
+    this.cardDataAttribute = cardDataAttribute
+
     this.mouseDown = new EventHandler({
       eventType: 'mousedown',
       element: container,
-      handler: (event, callback) => {
-        const target = event.target.closest(`[${cardDataAttribute}]`)
-
-        if (target) callback(event, target)
-      }
+      handler: (event, callback) => this.mouseDownHandler(event, callback)
     })
+
     this.mouseUp = new EventHandler({
       eventType: 'mouseup',
       element: container,
-      handler: (event, callback) => {
-        callback(event)
-      }
+      handler: (event, callback) => this.mouseUpHandler(event, callback)
     })
+
+    this.mouseMove = new EventHandler({
+      eventType: 'mousemove',
+      element: container,
+      handler: (event, callback) => this.mouseMoveHandler(event, callback)
+    })
+
+    this.targetCardNodeElement = null
+  }
+
+  mouseDownHandler (event, callback) {
+    const target = event.target.closest(`[${this.cardDataAttribute}]`)
+
+    if (target) {
+      this.targetCardNodeElement = target
+      callback(event, target)
+    }
+  }
+
+  mouseUpHandler (event, callback) {
+    if (this.targetCardNodeElement) {
+      callback(event)
+    }
+  }
+
+  mouseMoveHandler (event, callback) {
+    const target = event.target.closest(`[${this.cardDataAttribute}]`)
+
+    if (target) {
+      const rect = target.getBoundingClientRect()
+      const middleOfRect = rect.height / 2
+      const mouseOffset = event.pageY - rect.top
+
+      return mouseOffset < middleOfRect ? callback(event, target, 'top') : callback(event, target, 'bottom')
+    }
+
+    callback(null, null)
   }
 
   destroy () {
     this.mouseDown.removeListener()
-  }
-}
+    this.mouseUp.removeListener()
+    this.mouseMove.removeListener()
 
-export class Cards {
-  constructor ({
-    columns,
-    cardDataAttribute
-  }) {
-    if (!(columns instanceof Columns)) { throw new Error('columns must implement Columns') }
-
-    this.columns = columns.value
-    this.cardDataAttribute = cardDataAttribute
-
-    this.value = []
-    this.init()
-  }
-
-  init () {
-    this.update()
-  }
-
-  update () {
-    this.value.splice(0, this.value.length)
-    this.fetch()
-  }
-
-  destroy () {
-    this.value.splice(0, this.value.length)
-  }
-
-  fetch () {
-    this.columns.forEach(column => {
-      const cardsNodeList = column.nodeElement.querySelectorAll(`[${this.cardDataAttribute}]`)
-
-      cardsNodeList.forEach((cardNodeElement, index) => {
-        const card = new Card({
-          columnId: column.id,
-          rowId: index,
-          id: Number(cardNodeElement.getAttribute(this.cardDataAttribute)),
-          nodeElement: cardNodeElement
-        })
-
-        this.value.push(card)
-      })
-    })
-  }
-
-  findCardByNodeElement (nodeElement) {
-    const cardId = Number(nodeElement.getAttribute(this.cardDataAttribute))
-
-    if (!cardId) return null
-    return this.value.find(card => card.id === cardId)
+    this.targetCardNodeElement = null
   }
 }
 

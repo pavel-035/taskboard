@@ -56,6 +56,8 @@ export default {
         tasks.forEach((task) => {
           if (status.id === task.status_id) {
             tasksByStatuses[status.id].push(task)
+
+            tasksByStatuses[status.id].sort((a, b) => a.queue_position - b.queue_position)
           }
         })
       })
@@ -72,14 +74,14 @@ export default {
 
       dispatch('loadTasksByStatuses')
     },
-    editTask ({ commit, state, dispatch }, newTaskData) {
+    async editTask ({ commit, state, dispatch }, newTaskData) {
       const tasks = state.tasks
       const taskIndex = tasks.findIndex(item => item.id === newTaskData.id)
 
       const merge = { ...tasks[taskIndex], ...newTaskData }
 
       commit('SET_TASK', { taskIndex, task: merge })
-      dispatch('loadTasksByStatuses')
+      await dispatch('loadTasksByStatuses')
     },
     deleteTask ({ commit, state, dispatch }, taskId) {
       const tasks = state.tasks
