@@ -12,7 +12,7 @@
         v-else
 
         :description="task.description"
-        @edit="taskEdit()"
+        @edit="taskEditMode()"
         @delete="taskDelete(task.id)"
       />
     </div>
@@ -51,11 +51,14 @@ export default {
     taskDelete (id) {
       this.ActionDeleteTask(id)
     },
-    taskEdit () {
+    taskEditMode () {
       this.isEdit = true
     },
     saveEdit (editResult) {
-      this.ActionEditTask({ ...this.task, ...editResult })
+      this.ActionEditTask({
+        id: this.task.id,
+        task: editResult
+      })
 
       this.isEdit = false
     },

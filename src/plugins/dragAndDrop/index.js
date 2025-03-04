@@ -74,6 +74,8 @@ export default class {
       })
     })
 
+    DOMManager.observeDOMChanges(this.container, () => this.update())
+
     this.eventHandlers.push(cardEventHandlers)
   }
 
@@ -103,7 +105,6 @@ export default class {
     }
 
     this.editCard.isDisable(false)
-    DOMManager.observeDOMChanges(this.container, () => this.update())
   }
 
   onMouseMove (event, target, mouseOffset) {

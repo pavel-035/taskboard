@@ -58,8 +58,10 @@ export default {
       await dispatch('loadTasks')
       dispatch('loadTasksByStatuses')
     },
-    async editTask ({ commit, state, dispatch }, newTaskData) {
-      await api.tasks.editTask(newTaskData)
+    async editTask ({ commit, state, dispatch }, { id, task }) {
+      const targetTask = state.tasks.find(task => task.id === id)
+
+      await api.tasks.editTask({ ...targetTask, ...task })
       await dispatch('loadTasks')
       dispatch('loadTasksByStatuses')
     },

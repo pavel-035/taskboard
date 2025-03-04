@@ -27,14 +27,17 @@ export default {
     })
   },
   methods: {
-    ...mapActions('tasks', ['editTask']),
+    ...mapActions('tasks', {
+      ActionEditTask: 'editTask'
+    }),
 
     async onDrop (taskId, statusId, queuePosition) {
-      await this.editTask({
-        id: taskId,
+      const task = {
         status_id: statusId,
         queue_position: queuePosition
-      })
+      }
+
+      await this.ActionEditTask({ id: taskId, task })
     }
   },
   beforeDestroy () {
