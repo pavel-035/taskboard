@@ -55,11 +55,8 @@ export default {
       this.isEdit = true
     },
     saveEdit (editResult) {
-      const resultTask = {}
-
       this.ActionEditTask({ ...this.task, ...editResult })
 
-      this.ActionEditTask(resultTask)
       this.isEdit = false
     },
     cancelEdit () {

@@ -15,16 +15,6 @@ export default {
     },
     SET_TASKS_BY_STATUSES (state, tasksByStatuses) {
       state.tasksByStatuses = tasksByStatuses
-    },
-
-    CREATE_TASK (state, task) {
-      state.tasks.push(task)
-    },
-    SET_TASK (state, { taskIndex, task }) {
-      state.tasks[taskIndex] = task
-    },
-    DEL_TASK (state, { taskIndex }) {
-      state.tasks.splice(taskIndex, 1)
     }
   },
   actions: {
@@ -59,27 +49,23 @@ export default {
       commit('SET_TASKS_BY_STATUSES', tasksByStatuses)
     },
 
-    createTask ({ commit, state, dispatch }, task) {
-      commit('CREATE_TASK', {
+    async createTask ({ commit, state, dispatch }, task) {
+      await api.tasks.addTask({
         description: task.description,
         status_id: task.status_id,
-        id: state.tasks.at(-1).id + 1
+        queue_position: 0
       })
-
+      await dispatch('loadTasks')
       dispatch('loadTasksByStatuses')
     },
-    editTask ({ commit, state, dispatch }, newTaskData) {
-      const tasks = state.tasks
-      const taskIndex = tasks.findIndex(item => item.id === newTaskData.id)
-
-      commit('SET_TASK', { taskIndex, task: newTaskData })
+    async editTask ({ commit, state, dispatch }, newTaskData) {
+      await api.tasks.editTask(newTaskData)
+      await dispatch('loadTasks')
       dispatch('loadTasksByStatuses')
     },
-    deleteTask ({ commit, state, dispatch }, taskId) {
-      const tasks = state.tasks
-      const taskIndex = tasks.findIndex(item => item.id === taskId)
-
-      commit('DEL_TASK', { taskIndex })
+    async deleteTask ({ commit, state, dispatch }, taskId) {
+      await api.tasks.deleteTask(taskId)
+      await dispatch('loadTasks')
       dispatch('loadTasksByStatuses')
     }
   },
