@@ -7,13 +7,20 @@ import AlertService from '@/plugins/alertService'
 import '@/assets/styles/fonts.css'
 import '@/assets/styles/index.scss'
 import router from './router'
+import indexDB from '@/indexDB'
 
 Vue.config.productionTip = false
 
 Vue.use(AlertService)
 
-new Vue({
-  render: h => h(App),
-  router,
-  store
-}).$mount('#app')
+async function initApp () {
+  await indexDB.init()
+
+  new Vue({
+    render: h => h(App),
+    router,
+    store
+  }).$mount('#app')
+}
+
+initApp()

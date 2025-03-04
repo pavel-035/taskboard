@@ -1,6 +1,6 @@
 import { openDB } from 'idb'
-import tasksStore from '@/indexDB/tasksStore'
-import statusesStore from '@/indexDB/statusesStore'
+import tasksStore from '@/indexDB/taskboardDB/tasksStore'
+import statusesStore from '@/indexDB/taskboardDB/statusesStore'
 
 const DB_NAME = 'taskboard'
 const DB_VERSION = 3
