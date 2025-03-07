@@ -5,16 +5,12 @@ export default {
 
   state: () => {
     return {
-      tasks: [],
-      tasksByStatuses: {}
+      tasks: []
     }
   },
   mutations: {
     SET_TASKS (state, tasks) {
       state.tasks = tasks
-    },
-    SET_TASKS_BY_STATUSES (state, tasksByStatuses) {
-      state.tasksByStatuses = tasksByStatuses
     }
   },
   actions: {
@@ -23,63 +19,31 @@ export default {
 
       commit('SET_TASKS', tasks)
     },
-    loadTasksByStatuses ({ commit, getters, rootGetters }) {
-      const statuses = rootGetters['statuses/getStatuses']
-      const tasks = getters.getTasks
-      const tasksByStatuses = {}
-
-      if (!statuses.length) {
-        console.error(`
-          Error: statuses is not defined or empty
-          Error in: @/store/modules/tasks.js -> actions -> loadTasksByStatuses.
-        `)
-        return
-      }
-
-      statuses.forEach(status => {
-        tasksByStatuses[status.id] = []
-
-        tasks.forEach((task) => {
-          if (status.id === task.status_id) {
-            tasksByStatuses[status.id].push(task)
-          }
-        })
-
-        tasksByStatuses[status.id].sort((a, b) => a.order - b.order)
-      })
-
-      commit('SET_TASKS_BY_STATUSES', tasksByStatuses)
-    },
     async createTask ({ commit, state, dispatch }, task) {
       await api.tasks.addTask({
         description: task.description,
         status_id: task.status_id
       })
-      await dispatch('loadTasks')
-      dispatch('loadTasksByStatuses')
+      await dispatch('statuses/loadTasksByStatuses', null, { root: true })
     },
     async editTask ({ commit, state, dispatch }, { id, task }) {
       const targetTask = state.tasks.find(task => task.id === id)
 
       await api.tasks.editTask({ ...targetTask, ...task })
-      await dispatch('loadTasks')
-      dispatch('loadTasksByStatuses')
+      await dispatch('statuses/loadTasksByStatuses', null, { root: true })
     },
     async editOrder ({ commit, state, dispatch }, { id, task }) {
       const targetTask = state.tasks.find(task => task.id === id)
 
       await api.tasks.editOrder({ ...targetTask, ...task })
-      await dispatch('loadTasks')
-      dispatch('loadTasksByStatuses')
+      await dispatch('statuses/loadTasksByStatuses', null, { root: true })
     },
     async deleteTask ({ commit, state, dispatch }, taskId) {
       await api.tasks.deleteTask(taskId)
-      await dispatch('loadTasks')
-      dispatch('loadTasksByStatuses')
+      await dispatch('statuses/loadTasksByStatuses', null, { root: true })
     }
   },
   getters: {
-    getTasks: state => state.tasks,
-    getTasksByStatuses: (state) => state.tasksByStatuses
+    getTasks: state => state.tasks
   }
 }

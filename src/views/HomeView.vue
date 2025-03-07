@@ -2,14 +2,14 @@
   <div class="home">
     <board-draggable-container class="home__wrapper">
       <board-column
-        v-for="status in getStatuses"
+        v-for="status in getTasksByStatuses"
         :key="status.id"
 
         :status-id="status.id"
         :label="status.label"
         :background-color-header="status.color"
 
-        :tasks="getTasksByStatuses[status.id]"
+        :tasks="status.tasks"
         class="home__column"
 
         :data-draggable-column="status.id"
@@ -30,8 +30,7 @@ export default {
     BoardColumn
   },
   computed: {
-    ...mapGetters('tasks', ['getTasksByStatuses']),
-    ...mapGetters('statuses', ['getStatuses'])
+    ...mapGetters('statuses', ['getTasksByStatuses'])
   }
 }
 </script>

@@ -10,7 +10,6 @@ export default {
       console.error(error)
     }
   },
-
   async addTask (task) {
     try {
       await taskboardDB.tasks.post(task)

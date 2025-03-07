@@ -53,12 +53,39 @@ const statusesTable = {
       console.error(error)
     }
   },
-  async getTasksByStatus (statusId) {
+  async getTasksByStatuses () {
     try {
+      const statuses = await this.getAll()
+      const result = []
+
+      for (const status of statuses) {
+        const tx = this.dbPromise.transaction('tasks', 'readonly')
+        const tasksStoreObject = tx.objectStore('tasks')
+        const tasksIndex = tasksStoreObject.index('status_id')
+        const statusTasks = []
+
+        let cursor = await tasksIndex.openCursor(status.id)
+
+        while (cursor) {
+          statusTasks.push(cursor.value)
+          cursor = await cursor.continue()
+        }
+
+        statusTasks.sort((a, b) => a.order - b.order)
+        result.push({ ...status, tasks: statusTasks })
+      }
+
+      return result
+    } catch (error) {
+      console.error(error)
+    }
+  },
+  async getTasksByStatusId (statusId) {
+    try {
+      const result = []
       const tx = this.dbPromise.transaction('tasks', 'readonly')
       const tasksStoreObject = tx.objectStore('tasks')
       const tasksIndex = tasksStoreObject.index('status_id')
-      const result = []
 
       let cursor = await tasksIndex.openCursor(statusId)
 

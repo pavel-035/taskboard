@@ -28,34 +28,44 @@ export default {
 
   state: () => {
     return {
-      statuses: []
+      statuses: [],
+      tasksByStatuses: []
     }
   },
   mutations: {
     SET_STATUSES (state, statuses) {
       state.statuses = statuses
+    },
+    SET_TASKS_BY_STATUSES (state, tasksByStatuses) {
+      state.tasksByStatuses = tasksByStatuses
     }
   },
   actions: {
-    async loadStatuses ({ commit, dispatch }) {
+    async loadStatuses ({ commit }) {
       const statuses = await api.statuses.fetchStatuses() ?? []
 
-      if (!statuses.length) {
+      commit('SET_STATUSES', statuses)
+    },
+    async loadTasksByStatuses ({ commit, dispatch }) {
+      const tasksByStatuses = await api.statuses.fetchTasksByStatuses()
+
+      if (!tasksByStatuses.length) {
         await dispatch('generateStatuses')
         return
       }
 
-      commit('SET_STATUSES', statuses)
+      commit('SET_TASKS_BY_STATUSES', tasksByStatuses)
     },
     async generateStatuses ({ dispatch }) {
       for (const status of defaultStatuses) {
         await api.statuses.addStatus(status)
       }
 
-      await dispatch('loadStatuses')
+      await dispatch('loadTasksByStatuses')
     }
   },
   getters: {
-    getStatuses: state => state.statuses
+    getStatuses: state => state.statuses,
+    getTasksByStatuses: (state) => state.tasksByStatuses
   }
 }

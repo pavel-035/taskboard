@@ -11,6 +11,16 @@ export default {
     }
   },
 
+  async fetchTasksByStatuses () {
+    try {
+      const response = await taskboardDB.statuses.getTasksByStatuses()
+
+      return response ?? []
+    } catch (error) {
+      console.error(error)
+    }
+  },
+
   async addStatus (status) {
     try {
       await taskboardDB.statuses.post(status)

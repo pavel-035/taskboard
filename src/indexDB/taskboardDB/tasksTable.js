@@ -58,7 +58,7 @@ const tasksTable = {
   },
   async post (task) {
     try {
-      const statusTasks = await taskboardDB.statuses.getTasksByStatus(task.status_id)
+      const statusTasks = await taskboardDB.statuses.getTasksByStatusId(task.status_id)
       const tx = this.dbPromise.transaction('tasks', 'readwrite')
       const tasksStoreObject = tx.objectStore('tasks')
       const response = await tasksStoreObject.add({
@@ -92,7 +92,7 @@ const tasksTable = {
   },
   async recalculateOrder (statusId, updatedTask, oldTask) {
     try {
-      const statusTasks = await taskboardDB.statuses.getTasksByStatus(statusId)
+      const statusTasks = await taskboardDB.statuses.getTasksByStatusId(statusId)
 
       statusTasks.sort((a, b) => a.order - b.order)
 

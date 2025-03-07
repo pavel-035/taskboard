@@ -99,13 +99,16 @@ export default class {
 
   onMouseUp () {
     const focusColumnId = this.focusColumnId
+    const focusRowId = this.focusRowId
     const editCardId = this.editCard.id
 
-    if (focusColumnId !== null && editCardId !== null && this.focusRowId !== null) {
-      this.onDropCallback(editCardId, focusColumnId, this.focusRowId)
+    if (focusColumnId !== null && editCardId !== null && focusRowId !== null) {
+      this.onDropCallback(editCardId, focusColumnId, focusRowId)
     }
 
     this.editCard.isDisable(false)
+    this.focusRowId = null
+    this.editCard = null
   }
 
   onMouseMove (event, target, mouseOffset) {
