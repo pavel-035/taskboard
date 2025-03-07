@@ -28,16 +28,16 @@ export default {
   },
   methods: {
     ...mapActions('tasks', {
-      ActionEditTask: 'editTask'
+      ActionEditOrder: 'editOrder'
     }),
 
-    async onDrop (taskId, statusId, queuePosition) {
+    async onDrop (taskId, statusId, order) {
       const task = {
         status_id: statusId,
-        queue_position: queuePosition
+        order
       }
 
-      await this.ActionEditTask({ id: taskId, task })
+      await this.ActionEditOrder({ id: taskId, task })
     }
   },
   beforeDestroy () {

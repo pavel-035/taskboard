@@ -3,7 +3,7 @@ import taskboardDB from '@/indexDB/taskboardDB'
 export default {
   async fetchTasks () {
     try {
-      const response = await taskboardDB.tasks.get()
+      const response = await taskboardDB.tasks.getAll()
 
       return response ?? []
     } catch (error) {
@@ -22,6 +22,14 @@ export default {
   async editTask (task) {
     try {
       await taskboardDB.tasks.patch(task.id, task)
+    } catch (error) {
+      console.error(error)
+    }
+  },
+
+  async editOrder (task) {
+    try {
+      await taskboardDB.tasks.patchOrder(task.id, task)
     } catch (error) {
       console.error(error)
     }

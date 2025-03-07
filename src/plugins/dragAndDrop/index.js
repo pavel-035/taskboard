@@ -68,6 +68,7 @@ export default class {
 
       cardEventHandlers.mouseUp.addListener(() => {
         this.onMouseUp()
+        cardEventHandlers.mouseMove.removeListener()
       })
       cardEventHandlers.mouseMove.addListener((event, target, mouseOffset) => {
         this.onMouseMove(event, target, mouseOffset)
@@ -100,7 +101,7 @@ export default class {
     const focusColumnId = this.focusColumnId
     const editCardId = this.editCard.id
 
-    if (focusColumnId && editCardId) {
+    if (focusColumnId !== null && editCardId !== null && this.focusRowId !== null) {
       this.onDropCallback(editCardId, focusColumnId, this.focusRowId)
     }
 
@@ -112,19 +113,29 @@ export default class {
   }
 
   calculateTargetRowId (target, mouseOffset) {
-    if (target) {
-      const cardHover = DOMManager.findCardByNodeElement(this.cards, target, this.cardDataAttribute)
+    if (!target) return 0
 
-      switch (mouseOffset) {
-        case 'top': {
-          return Math.max(cardHover.rowId - 1, 0)
-        }
-        case 'bottom': {
-          return cardHover.rowId + 1
-        }
-      }
-    } else {
-      return 0
+    const hoveredCard = DOMManager.findCardByNodeElement(this.cards, target, this.cardDataAttribute)
+    if (hoveredCard.id === this.editCard.id) return this.editCard.rowId
+
+    const isDifferentColumn = hoveredCard.columnId !== this.editCard.columnId
+    const columnCards = this.cards
+      .filter(card => card.columnId === this.focusColumnId)
+      .sort((a, b) => a.rowId - b.rowId)
+
+    const isBelow = hoveredCard.rowId > this.editCard.rowId
+    const lastRowId = columnCards.at(-1)?.rowId ?? 0
+    const maxRowId = isDifferentColumn ? lastRowId + 1 : lastRowId
+
+    switch (mouseOffset) {
+      case 'top':
+        return !isDifferentColumn && isBelow ? Math.max(hoveredCard.rowId - 1, 0) : hoveredCard.rowId
+
+      case 'bottom':
+        return !isDifferentColumn && isBelow ? hoveredCard.rowId : Math.min(hoveredCard.rowId + 1, maxRowId)
+
+      default:
+        return 0
     }
   }
 }

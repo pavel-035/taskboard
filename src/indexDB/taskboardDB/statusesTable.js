@@ -1,7 +1,7 @@
-const statusesStore = {
+const statusesTable = {
   dbPromise: null,
 
-  update (event) {
+  upgrade (event) {
     const db = event.target.result
 
     if (!db.objectStoreNames.contains('statuses')) {
@@ -19,16 +19,16 @@ const statusesStore = {
   },
   init (dbPromise) {
     this.dbPromise = dbPromise
-    return statusesStore
+    return statusesTable
   },
 
   // statuses CRUD
-  async get () {
-    const tx = this.dbPromise.transaction('statuses', 'readonly')
-    const statusesStoreObject = tx.objectStore('statuses')
-
+  async getAll () {
     try {
+      const tx = this.dbPromise.transaction('statuses', 'readonly')
+      const statusesStoreObject = tx.objectStore('statuses')
       const result = []
+
       let cursor = await statusesStoreObject.openCursor()
 
       while (cursor) {
@@ -43,14 +43,31 @@ const statusesStore = {
     }
   },
   async getById (id) {
-    const tx = this.dbPromise.transaction('statuses', 'readonly')
-    const statusesStoreObject = tx.objectStore('statuses')
-
     try {
-      const response = await statusesStoreObject.openCursor(id)
+      const tx = this.dbPromise.transaction('statuses', 'readonly')
+      const statusesStoreObject = tx.objectStore('statuses')
+      const response = await statusesStoreObject.get(id)
 
-      await tx.done
-      return response
+      return response ?? null
+    } catch (error) {
+      console.error(error)
+    }
+  },
+  async getTasksByStatus (statusId) {
+    try {
+      const tx = this.dbPromise.transaction('tasks', 'readonly')
+      const tasksStoreObject = tx.objectStore('tasks')
+      const tasksIndex = tasksStoreObject.index('status_id')
+      const result = []
+
+      let cursor = await tasksIndex.openCursor(statusId)
+
+      while (cursor) {
+        result.push(cursor.value)
+        cursor = await cursor.continue()
+      }
+
+      return result
     } catch (error) {
       console.error(error)
     }
@@ -98,4 +115,4 @@ const statusesStore = {
   }
 }
 
-export default statusesStore
+export default statusesTable

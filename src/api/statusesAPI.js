@@ -3,7 +3,7 @@ import taskboardDB from '@/indexDB/taskboardDB'
 export default {
   async fetchStatuses () {
     try {
-      const response = await taskboardDB.statuses.get()
+      const response = await taskboardDB.statuses.getAll()
 
       return response ?? []
     } catch (error) {

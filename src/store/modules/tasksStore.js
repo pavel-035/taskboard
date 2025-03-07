@@ -44,16 +44,16 @@ export default {
             tasksByStatuses[status.id].push(task)
           }
         })
+
+        tasksByStatuses[status.id].sort((a, b) => a.order - b.order)
       })
 
       commit('SET_TASKS_BY_STATUSES', tasksByStatuses)
     },
-
     async createTask ({ commit, state, dispatch }, task) {
       await api.tasks.addTask({
         description: task.description,
-        status_id: task.status_id,
-        queue_position: 0
+        status_id: task.status_id
       })
       await dispatch('loadTasks')
       dispatch('loadTasksByStatuses')
@@ -62,6 +62,13 @@ export default {
       const targetTask = state.tasks.find(task => task.id === id)
 
       await api.tasks.editTask({ ...targetTask, ...task })
+      await dispatch('loadTasks')
+      dispatch('loadTasksByStatuses')
+    },
+    async editOrder ({ commit, state, dispatch }, { id, task }) {
+      const targetTask = state.tasks.find(task => task.id === id)
+
+      await api.tasks.editOrder({ ...targetTask, ...task })
       await dispatch('loadTasks')
       dispatch('loadTasksByStatuses')
     },

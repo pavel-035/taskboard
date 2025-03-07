@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import tasks from '@/store/modules/tasks'
-import statuses from '@/store/modules/statuses'
+import tasks from '@/store/modules/tasksStore'
+import statuses from '@/store/modules/statusesStore'
 
 Vue.use(Vuex)
 

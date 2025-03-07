@@ -1,9 +1,9 @@
 import { openDB } from 'idb'
-import tasksStore from '@/indexDB/taskboardDB/tasksStore'
-import statusesStore from '@/indexDB/taskboardDB/statusesStore'
+import tasksTable from '@/indexDB/taskboardDB/tasksTable'
+import statusesTable from '@/indexDB/taskboardDB/statusesTable'
 
 const DB_NAME = 'taskboard'
-const DB_VERSION = 3
+const DB_VERSION = 4
 
 const taskboardDB = {
   dbPromise: null,
@@ -15,14 +15,14 @@ const taskboardDB = {
     try {
       this.dbPromise = await openDB(DB_NAME, DB_VERSION, {
         upgrade (db, oldVersion, newVersion, transaction, event) {
-          tasksStore.update(event)
-          statusesStore.update(event)
+          tasksTable.upgrade(event)
+          statusesTable.upgrade(event)
         }
       })
 
       // инициализация модулей хранилищ
-      this.tasks = tasksStore.init(this.dbPromise)
-      this.statuses = statusesStore.init(this.dbPromise)
+      this.tasks = tasksTable.init(this.dbPromise)
+      this.statuses = statusesTable.init(this.dbPromise)
     } catch (error) {
       console.error('ERROR: failed to open database:', error)
     }
