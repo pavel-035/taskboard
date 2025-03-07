@@ -39,7 +39,8 @@ const statusesTable = {
       await tx.done
       return result
     } catch (error) {
-      console.error(error)
+      console.error('[DB] Getting statuses list', error)
+      throw error
     }
   },
   async getById (id) {
@@ -50,7 +51,8 @@ const statusesTable = {
 
       return response ?? null
     } catch (error) {
-      console.error(error)
+      console.error('[DB] Finding status by ID', error)
+      throw error
     }
   },
   async getTasksByStatuses () {
@@ -77,7 +79,8 @@ const statusesTable = {
 
       return result
     } catch (error) {
-      console.error(error)
+      console.error('[DB] Getting tasks grouped by statuses', error)
+      throw error
     }
   },
   async getTasksByStatusId (statusId) {
@@ -96,7 +99,7 @@ const statusesTable = {
 
       return result
     } catch (error) {
-      console.error(error)
+      console.error('[DB] Getting tasks by status ID', error)
     }
   },
   async post (task) {
@@ -109,7 +112,8 @@ const statusesTable = {
       await tx.done
       return response
     } catch (error) {
-      console.error(error)
+      console.error('[DB] Adding new status', error)
+      throw error
     }
   },
   async patch (id, task) {
@@ -123,7 +127,8 @@ const statusesTable = {
       await tx.done
       return response
     } catch (error) {
-      console.error(error)
+      console.error('[DB] Updating status', error)
+      throw error
     }
   },
   async del (id) {
@@ -137,7 +142,8 @@ const statusesTable = {
       await tx.done
       return response
     } catch (error) {
-      console.error(error)
+      console.error('[DB] Deleting status', error)
+      throw error
     }
   }
 }

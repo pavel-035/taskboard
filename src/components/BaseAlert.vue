@@ -12,9 +12,7 @@
         <span class="base-alert__title">
           {{ title }}
         </span>
-        <p class="base-alert__description">
-          {{ description }}
-        </p>
+        <pre class="base-alert__description">{{ description }}</pre>
       </div>
       <base-button
         class="base-alert__close"
@@ -50,13 +48,14 @@ export default {
     type: {
       type: String,
       required: true,
-      validator: value => ['success', 'info', 'warning', 'danger'].includes(value)
+      validator: value => ['success', 'info', 'warning', 'error'].includes(value)
     }
   },
   data () {
     return {
       iconNameByType: {
-        success: 'success'
+        success: 'success',
+        error: 'error'
       }
     }
   }
@@ -81,14 +80,17 @@ export default {
     &_success {
       border-left: 8px solid #22C33D;
     }
+    &_error {
+      border-left: 8px solid #F53D5C;
+    }
   }
   &__icon {
-    margin-right: 12px;
     padding: 4px;
   }
   &__body {
     flex: 1;
     padding: 4px 0;
+    margin: 0 12px;
   }
   &__title {
     color: #1C2530;
@@ -98,6 +100,11 @@ export default {
     letter-spacing: 0;
   }
   &__description {
+    margin: 8px 0 0;
+    padding: 0;
+
+    white-space: pre-wrap;
+
     color: #1C2530;
     font-weight: 400;
     font-size: 14px;

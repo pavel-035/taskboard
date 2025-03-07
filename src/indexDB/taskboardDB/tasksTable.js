@@ -42,7 +42,8 @@ const tasksTable = {
 
       return result
     } catch (error) {
-      console.error(error)
+      console.error('[DB] Getting tasks list', error)
+      throw error
     }
   },
   async getById (id) {
@@ -53,7 +54,8 @@ const tasksTable = {
 
       return response ?? null
     } catch (error) {
-      console.error(error)
+      console.error('[DB] Finding task by ID', error)
+      throw error
     }
   },
   async post (task) {
@@ -68,7 +70,8 @@ const tasksTable = {
 
       return response ?? null
     } catch (error) {
-      console.error(error)
+      console.error('[DB] Adding new task', error)
+      throw error
     }
   },
   async patchOrder (id, updatedTask) {
@@ -87,7 +90,8 @@ const tasksTable = {
         await this.recalculateOrder(updatedTask.status_id, updatedTask, oldTask)
       }
     } catch (error) {
-      console.error('Error updating task order:', error)
+      console.error('[DB] Updating task order', error)
+      throw error
     }
   },
   async recalculateOrder (statusId, updatedTask, oldTask) {
@@ -103,7 +107,8 @@ const tasksTable = {
         return this.patch(task.id, { ...task, order: index })
       }))
     } catch (error) {
-      console.error('Error recalculating task order:', error)
+      console.error('[DB] Recalculating task order', error)
+      throw error
     }
   },
   async patch (id, task) {
@@ -118,7 +123,8 @@ const tasksTable = {
       }
       return null
     } catch (error) {
-      console.error(error)
+      console.error('[DB] Updating task', error)
+      throw error
     }
   },
   async del (id) {
@@ -134,7 +140,8 @@ const tasksTable = {
 
       await this.recalculateOrder(taskToDelete.status_id, null, taskToDelete)
     } catch (error) {
-      console.error(error)
+      console.error('[DB] Deleting task', error)
+      throw error
     }
   }
 }

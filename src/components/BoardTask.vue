@@ -1,9 +1,7 @@
 <template>
   <div class="board-task">
     <div class="board-task__wrapper">
-      <span class="board-task__description">
-        {{ description }}
-      </span>
+      <pre class="board-task__description">{{ description }}</pre>
 
       <base-dropdown-menu class="board-task__menu">
         <template v-slot:activator="{ showMenu, isOpenMenu }">
@@ -67,6 +65,10 @@ export default {
       box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.06);
       transition: box-shadow ease-in-out .3s;
     }
+  }
+  &__description {
+    margin: 0;
+    white-space: pre-wrap;
   }
 }
 </style>

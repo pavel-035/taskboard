@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import BoardTaskEdit from '@/components/BoardTaskEdit.vue'
 import BoardTask from '@/components/BoardTask.vue'
 
@@ -42,6 +42,9 @@ export default {
       isEdit: false
     }
   },
+  computed: {
+    ...mapGetters('tasks', ['getTaskById'])
+  },
   methods: {
     ...mapActions('tasks', {
       ActionEditTask: 'editTask',
@@ -49,9 +52,15 @@ export default {
     }),
 
     async taskDelete (id) {
-      await this.ActionDeleteTask(id)
+      const task = this.getTaskById(id)
 
-      this.$alert('success', 'Задача удалена')
+      try {
+        await this.ActionDeleteTask(id)
+
+        this.$alert('success', 'Задача удалена', task.description)
+      } catch (error) {
+        this.$alert('error', 'Не удалось удалить задачу', task.description)
+      }
     },
     taskEditMode () {
       this.isEdit = true

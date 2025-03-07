@@ -7,7 +7,8 @@ export default {
 
       return response ?? []
     } catch (error) {
-      console.error(error)
+      console.error('[API] Fetching statuses', error)
+      throw error
     }
   },
 
@@ -17,7 +18,8 @@ export default {
 
       return response ?? []
     } catch (error) {
-      console.error(error)
+      console.error('[API] Fetching tasks grouped by statuses', error)
+      throw error
     }
   },
 
@@ -25,7 +27,8 @@ export default {
     try {
       await taskboardDB.statuses.post(status)
     } catch (error) {
-      console.error(error)
+      console.error('[API] Adding new status', error)
+      throw error
     }
   },
 
@@ -33,7 +36,8 @@ export default {
     try {
       await taskboardDB.statuses.patch(status.id, status)
     } catch (error) {
-      console.error(error)
+      console.error('[API] Editing status', error)
+      throw error
     }
   },
 
@@ -41,7 +45,8 @@ export default {
     try {
       await taskboardDB.statuses.del(id)
     } catch (error) {
-      console.error(error)
+      console.error('[API] Deleting status', error)
+      throw error
     }
   }
 }

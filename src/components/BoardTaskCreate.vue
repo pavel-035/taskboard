@@ -52,13 +52,17 @@ export default {
     async save (description) {
       const status = this.getStatusByID(this.statusId)
 
-      await this.createTask({
-        description,
-        status_id: this.statusId
-      })
+      try {
+        await this.createTask({
+          description,
+          status_id: this.statusId
+        })
 
-      this.isCreate = false
-      this.$alert('success', `Задача создана в "${status.label}"`)
+        this.isCreate = false
+        this.$alert('success', `Задача создана в "${status.label}"`, description)
+      } catch (error) {
+        this.$alert('success', `Не удалось создать в "${status.label}"`, description)
+      }
     },
     cancel () {
       this.isCreate = false

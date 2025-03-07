@@ -27,7 +27,8 @@ export default {
     })
   },
   computed: {
-    ...mapGetters('statuses', ['getStatusByID'])
+    ...mapGetters('statuses', ['getStatusByID']),
+    ...mapGetters('tasks', ['getTaskById'])
   },
   methods: {
     ...mapActions('tasks', {
@@ -35,15 +36,20 @@ export default {
     }),
 
     async onDrop (taskId, statusId, order) {
-      const status = await this.getStatusByID(statusId)
+      const status = this.getStatusByID(statusId)
+      const editableTask = this.getTaskById(taskId)
 
-      const task = {
-        status_id: statusId,
-        order
+      try {
+        const task = {
+          status_id: statusId,
+          order
+        }
+
+        await this.ActionEditOrder({ id: taskId, task })
+        this.$alert('success', `Задача перемещена в "${status.label}"`, editableTask.description)
+      } catch (error) {
+        this.$alert('error', `Не удалось переместить задачу в "${status.label}"`, editableTask.description)
       }
-
-      await this.ActionEditOrder({ id: taskId, task })
-      this.$alert('success', `Задача перемещена в "${status.label}"`)
     }
   },
   beforeDestroy () {
