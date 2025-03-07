@@ -66,6 +66,7 @@ export default {
   },
   getters: {
     getStatuses: state => state.statuses,
-    getTasksByStatuses: (state) => state.tasksByStatuses
+    getStatusByID: state => id => state.statuses.find(status => status.id === id),
+    getTasksByStatuses: state => state.tasksByStatuses
   }
 }

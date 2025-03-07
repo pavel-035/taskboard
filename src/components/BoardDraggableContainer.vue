@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import DragAndDrop from '@/plugins/dragAndDrop'
 
 export default {
@@ -26,18 +26,24 @@ export default {
       onDrop: this.onDrop
     })
   },
+  computed: {
+    ...mapGetters('statuses', ['getStatusByID'])
+  },
   methods: {
     ...mapActions('tasks', {
       ActionEditOrder: 'editOrder'
     }),
 
     async onDrop (taskId, statusId, order) {
+      const status = await this.getStatusByID(statusId)
+
       const task = {
         status_id: statusId,
         order
       }
 
       await this.ActionEditOrder({ id: taskId, task })
+      this.$alert('success', `Задача перемещена в "${status.label}"`)
     }
   },
   beforeDestroy () {

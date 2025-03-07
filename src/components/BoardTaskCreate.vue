@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import BoardTaskEdit from '@/components/BoardTaskEdit.vue'
 import BaseButton from '@/components/BaseButton.vue'
 
@@ -43,16 +43,22 @@ export default {
       isCreate: false
     }
   },
+  computed: {
+    ...mapGetters('statuses', ['getStatusByID'])
+  },
   methods: {
     ...mapActions('tasks', ['createTask']),
 
-    save (description) {
-      this.createTask({
+    async save (description) {
+      const status = this.getStatusByID(this.statusId)
+
+      await this.createTask({
         description,
         status_id: this.statusId
       })
 
       this.isCreate = false
+      this.$alert('success', `Задача создана в "${status.label}"`)
     },
     cancel () {
       this.isCreate = false

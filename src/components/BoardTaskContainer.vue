@@ -48,8 +48,10 @@ export default {
       ActionDeleteTask: 'deleteTask'
     }),
 
-    taskDelete (id) {
-      this.ActionDeleteTask(id)
+    async taskDelete (id) {
+      await this.ActionDeleteTask(id)
+
+      this.$alert('success', 'Задача удалена')
     },
     taskEditMode () {
       this.isEdit = true
