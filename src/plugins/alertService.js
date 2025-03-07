@@ -1,6 +1,6 @@
 export default {
   install (Vue) {
-    Vue.prototype.$alert = function (title, description, type) {
+    Vue.prototype.$alert = function (type, title, description) {
       this.$root.$emit('alert', { title, description, type, id: generateAlertId() })
     }
   }

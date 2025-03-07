@@ -6,7 +6,7 @@
           v-for="alert in alerts"
           :key="alert.id"
 
-          :description="alert.description + alert.id"
+          :description="alert.description"
           :title="alert.title"
           :type="alert.type"
 
@@ -37,7 +37,7 @@ export default {
 
       setTimeout(() => {
         this.alerts.splice(0, 1)
-      }, 30000)
+      }, 3000)
     })
   },
   methods: {
