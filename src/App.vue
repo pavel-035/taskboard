@@ -5,17 +5,20 @@
     </template>
 
     <base-alert-bar />
+    <base-modal-container />
   </div>
 </template>
 
 <script>
-import BaseAlertBar from '@/components/BaseAlertBar.vue'
 import { mapActions } from 'vuex'
+import BaseModalContainer from '@/components/BaseModalContainer.vue'
+import BaseAlertBar from '@/components/BaseAlertBar.vue'
 
 export default {
   name: 'App',
   components: {
-    BaseAlertBar
+    BaseAlertBar,
+    BaseModalContainer
   },
   data () {
     return {

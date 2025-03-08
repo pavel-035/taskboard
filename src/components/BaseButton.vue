@@ -66,6 +66,7 @@ export default {
 <style scoped lang="scss">
 .base-button {
   display: flex;
+  justify-content: center;
   column-gap: 8px;
   align-items: center;
 
