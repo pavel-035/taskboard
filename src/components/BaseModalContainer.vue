@@ -55,15 +55,15 @@ export default {
   },
   methods: {
     confirm () {
-      this.onConfirm()
+      if (this.onConfirm) this.onConfirm()
       this.close()
     },
     cancel () {
-      this.onCancel()
+      if (this.onCancel) this.onCancel()
       this.close()
     },
     close () {
-      this.onClose()
+      if (this.onClose) this.onClose()
       this.isOpen = false
     }
   }

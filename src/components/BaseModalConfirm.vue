@@ -81,6 +81,11 @@ export default {
     vertical-align: middle;
   }
 
+  &__description {
+    margin: 24px 0;
+    white-space: pre-wrap;
+  }
+
   &__footer {
     display: flex;
     column-gap: 16px;

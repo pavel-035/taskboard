@@ -54,13 +54,27 @@ export default {
     async taskDelete (id) {
       const task = this.getTaskById(id)
 
-      try {
-        await this.ActionDeleteTask(id)
+      this.$modal({
+        slot: 'BaseModalConfirm',
+        slotProps: {
+          title: 'Удалить задачу?',
+          description: task.description,
+          confirmLabel: 'Удалить'
+        },
 
-        this.$alert('success', 'Задача удалена', task.description)
-      } catch (error) {
-        this.$alert('error', 'Не удалось удалить задачу', task.description)
-      }
+        onConfirm: async () => {
+          try {
+            await this.ActionDeleteTask(id)
+
+            this.$alert('success', 'Задача удалена', task.description)
+          } catch (error) {
+            this.$alert('error', 'Не удалось удалить задачу', task.description)
+          }
+        },
+        onCancel: () => {
+          this.$alert('error', 'Удаление задачи отменено', task.description)
+        }
+      })
     },
     taskEditMode () {
       this.isEdit = true
