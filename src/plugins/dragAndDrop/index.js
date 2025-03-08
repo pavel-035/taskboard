@@ -103,7 +103,9 @@ export default class {
     const editCardId = this.editCard.id
 
     if (focusColumnId !== null && editCardId !== null && focusRowId !== null) {
-      this.onDropCallback(editCardId, focusColumnId, focusRowId)
+      if (this.editCard.columnId !== focusColumnId || this.editCard.rowId !== focusRowId) {
+        this.onDropCallback(editCardId, focusColumnId, focusRowId)
+      }
     }
 
     this.editCard.isDisable(false)

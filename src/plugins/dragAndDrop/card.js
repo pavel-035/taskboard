@@ -48,9 +48,10 @@ export class CardEventHandlers {
   }
 
   mouseDownHandler (event, callback) {
+    const isInteractive = event.target.closest('input, button, select, textarea')
     const target = event.target.closest(`[${this.cardDataAttribute}]`)
 
-    if (target) {
+    if (target && !isInteractive) {
       this.targetCardNodeElement = target
       callback(event, target)
     }
@@ -58,6 +59,7 @@ export class CardEventHandlers {
 
   mouseUpHandler (event, callback) {
     if (this.targetCardNodeElement) {
+      this.targetCardNodeElement = null
       callback(event)
     }
   }

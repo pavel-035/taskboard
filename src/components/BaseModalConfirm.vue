@@ -3,6 +3,7 @@
     <div class="base-modal-confirm__wrapper">
       <div class="base-modal-confirm__header">
         <span class="base-modal-confirm__title">{{ title }}</span>
+
         <base-button
           color="#86949E"
           icon="x"
@@ -11,24 +12,25 @@
           @click="$emit('close')"
         />
       </div>
-      <form>
+
+      <div class="base-modal-confirm__body">
         <pre class="base-modal-confirm__description">{{ description }}</pre>
+      </div>
 
-        <div class="base-modal-confirm__footer">
-          <base-button
-            :label="confirmLabel"
-            class="base-modal-confirm__button"
+      <div class="base-modal-confirm__footer">
+        <base-button
+          :label="confirmLabel"
+          class="base-modal-confirm__button"
 
-            @click="$emit('confirm')"
-          />
-          <base-button
-            :label="cancelLabel"
-            class="base-modal-confirm__button"
+          @click="$emit('confirm')"
+        />
+        <base-button
+          :label="cancelLabel"
+          class="base-modal-confirm__button"
 
-            @click="$emit('cancel')"
-          />
-        </div>
-      </form>
+          @click="$emit('cancel')"
+        />
+      </div>
     </div>
   </div>
 </template>
