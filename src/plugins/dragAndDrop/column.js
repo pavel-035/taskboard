@@ -15,13 +15,13 @@ export class ColumnEventHandler {
     this.columnElement = columnElement
 
     this.mouseEnter = new EventHandler({
-      eventType: 'mouseenter',
+      eventType: 'pointerenter',
       element: columnElement,
       handler: (event, callback) => callback(event)
     })
 
     this.mouseLeave = new EventHandler({
-      eventType: 'mouseleave',
+      eventType: 'pointerleave',
       element: columnElement,
       handler: (event, callback) => callback(event)
     })

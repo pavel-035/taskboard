@@ -1,5 +1,5 @@
 import { CardEventHandlers } from './card'
-import { DOMManager, DOMStyleManager } from './DOMManager'
+import { DOMManager } from './DOMManager'
 import { DraggableComponent } from './draggable'
 import { ColumnEventHandler } from './column'
 
@@ -53,6 +53,7 @@ export default class {
 
   initEventHandlers () {
     this.colums.forEach(column => {
+      column.nodeElement.style.touchAction = 'none'
       const columnEventHandler = new ColumnEventHandler(column.nodeElement)
 
       columnEventHandler.focus.addListener(() => { this.focusColumnId = column.id })
@@ -93,7 +94,6 @@ export default class {
       card: this.editCard
     })
 
-    DOMStyleManager.blockBodyScroll()
     draggableComponent.init(event)
     this.editCard.isDisable(true)
   }
@@ -112,7 +112,6 @@ export default class {
     this.editCard.isDisable(false)
     this.focusRowId = null
     this.editCard = null
-    DOMStyleManager.unblockBodyScroll()
   }
 
   onMouseMove (event, target, mouseOffset) {

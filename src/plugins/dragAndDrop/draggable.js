@@ -113,14 +113,14 @@ export class DraggableStyleManager {
 export class DraggableHandler {
   constructor (columnElement) {
     this.mouseMove = new EventHandler({
-      eventType: 'mousemove',
+      eventType: 'pointermove',
       element: columnElement,
       handler: (event, callback) => {
         callback(event)
       }
     })
     this.mouseUp = new EventHandler({
-      eventType: 'mouseup',
+      eventType: 'pointerup',
       element: columnElement,
       handler: (event, callback) => {
         callback(event)

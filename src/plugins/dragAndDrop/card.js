@@ -27,19 +27,19 @@ export class CardEventHandlers {
     this.cardDataAttribute = cardDataAttribute
 
     this.mouseDown = new EventHandler({
-      eventType: 'mousedown',
+      eventType: 'pointerdown',
       element: container,
       handler: (event, callback) => this.mouseDownHandler(event, callback)
     })
 
     this.mouseUp = new EventHandler({
-      eventType: 'mouseup',
+      eventType: 'pointerup',
       element: container,
       handler: (event, callback) => this.mouseUpHandler(event, callback)
     })
 
     this.mouseMove = new EventHandler({
-      eventType: 'mousemove',
+      eventType: 'pointermove',
       element: container,
       handler: (event, callback) => this.mouseMoveHandler(event, callback)
     })
@@ -48,6 +48,8 @@ export class CardEventHandlers {
   }
 
   mouseDownHandler (event, callback) {
+    event.target.releasePointerCapture(event.pointerId)
+
     const isInteractive = event.target.closest('input, button, select, textarea')
     const target = event.target.closest(`[${this.cardDataAttribute}]`)
 

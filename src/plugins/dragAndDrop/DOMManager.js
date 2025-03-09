@@ -52,6 +52,7 @@ export class DOMManager {
 
         this.cardNodeList.push(cardNodeElement)
         cards.push(card)
+        cardNodeElement.style.touchAction = 'none'
       })
     })
 
@@ -85,15 +86,5 @@ export class DOMManager {
       bottom: rect.bottom + window.scrollY,
       left: rect.left + window.scrollX
     }
-  }
-}
-
-export class DOMStyleManager {
-  static blockBodyScroll () {
-    document.body.style.overflow = 'hidden'
-  }
-
-  static unblockBodyScroll () {
-    document.body.style.overflow = 'auto'
   }
 }
