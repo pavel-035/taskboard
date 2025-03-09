@@ -87,3 +87,13 @@ export class DOMManager {
     }
   }
 }
+
+export class DOMStyleManager {
+  static blockBodyScroll () {
+    document.body.style.overflow = 'hidden'
+  }
+
+  static unblockBodyScroll () {
+    document.body.style.overflow = 'auto'
+  }
+}

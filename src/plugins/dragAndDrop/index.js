@@ -1,5 +1,5 @@
 import { CardEventHandlers } from './card'
-import { DOMManager } from './DOMManager'
+import { DOMManager, DOMStyleManager } from './DOMManager'
 import { DraggableComponent } from './draggable'
 import { ColumnEventHandler } from './column'
 
@@ -93,6 +93,7 @@ export default class {
       card: this.editCard
     })
 
+    DOMStyleManager.blockBodyScroll()
     draggableComponent.init(event)
     this.editCard.isDisable(true)
   }
@@ -111,6 +112,7 @@ export default class {
     this.editCard.isDisable(false)
     this.focusRowId = null
     this.editCard = null
+    DOMStyleManager.unblockBodyScroll()
   }
 
   onMouseMove (event, target, mouseOffset) {

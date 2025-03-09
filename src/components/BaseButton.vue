@@ -72,6 +72,7 @@ export default {
 
   cursor: pointer;
 
+  min-height: 10px;
   padding: 9px;
   border: 1px solid #C4CAD4;
   border-radius: 4px;

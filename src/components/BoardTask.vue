@@ -69,6 +69,10 @@ export default {
   &__description {
     margin: 0;
     white-space: pre-wrap;
+
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
   }
 }
 </style>

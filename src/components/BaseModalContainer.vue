@@ -8,9 +8,18 @@
         :is="component"
         v-bind="componentProps"
 
-        @confirm="confirm()"
-        @cancel="cancel()"
-        @close="close()"
+        @confirm="
+          confirm()
+          onConfirm()
+        "
+        @cancel="
+          cancel()
+          onCancel()
+        "
+        @close="
+          close()
+          onClose()
+        "
       />
     </div>
   </div>
@@ -31,9 +40,9 @@ export default {
       componentName: null,
       componentProps: null,
 
-      onConfirm: null,
-      onClose: null,
-      onCancel: null
+      onConfirm: () => {},
+      onClose: () => {},
+      onCancel: () => {}
     }
   },
   computed: {
@@ -55,15 +64,12 @@ export default {
   },
   methods: {
     confirm () {
-      if (this.onConfirm) this.onConfirm()
       this.close()
     },
     cancel () {
-      if (this.onCancel) this.onCancel()
       this.close()
     },
     close () {
-      if (this.onClose) this.onClose()
       this.isOpen = false
     }
   }

@@ -43,6 +43,7 @@ export default {
     },
     focus () {
       this.$nextTick(() => {
+        this.resizeTextarea()
         this.$refs.textareaRef.focus()
       })
     }
@@ -59,6 +60,11 @@ export default {
     border: none;
     background: transparent;
     resize: none;
+
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
+    letter-spacing: 0;
 
     &::placeholder {
       color: #86949E;

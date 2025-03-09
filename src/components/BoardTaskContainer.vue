@@ -5,6 +5,7 @@
         v-if="isEdit"
 
         :value="task.description"
+
         @save="saveEdit({ description: $event })"
         @cancel="cancelEdit"
       />

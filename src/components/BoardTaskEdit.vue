@@ -1,6 +1,12 @@
 <template>
-  <div class="board-task-edit">
-    <div class="board-task-edit__wrapper">
+  <div
+    ref="boardTaskEditRef"
+    class="board-task-edit"
+  >
+    <div
+      class="board-task-edit__wrapper"
+      @focusout="dropEdit"
+    >
       <base-text-area
         ref="baseTextareaRef"
         v-model="localValue"
@@ -12,13 +18,13 @@
           icon="x"
           variant="content-only"
           color="#F53D5C"
-          @click="cancel()"
+          @click.capture="cancel()"
         />
         <base-button
           icon="checkMark"
           variant="content-only"
           color="#22C33D"
-          @click="save()"
+          @click.capture="save()"
         />
       </div>
     </div>
@@ -39,10 +45,6 @@ export default {
     value: {
       type: String,
       default: ''
-    },
-    isFocused: {
-      type: Boolean,
-      default: false
     }
   },
   data () {
@@ -50,21 +52,44 @@ export default {
       localValue: ''
     }
   },
-  watch: {
-    isFocused: function (newVal) {
-      if (newVal) this.$refs.baseTextareaRef.focus()
-    }
-  },
   created () {
     this.localValue = this.value
   },
+  async mounted () {
+    await this.$nextTick()
+    this.$refs.baseTextareaRef.focus()
+  },
   methods: {
     save () {
+      if (!this.localValue) {
+        this.$alert('error', 'Нельзя сохранить пустое значение')
+        this.$refs.baseTextareaRef.focus()
+        return
+      }
       this.$emit('save', this.localValue)
     },
     cancel () {
       this.localValue = this.value
       this.$emit('cancel', this.value)
+    },
+    dropEdit ($event) {
+      const clickTaskElement = this.$refs.boardTaskEditRef.contains($event.relatedTarget)
+
+      if ($event.target.tagName === 'TEXTAREA' && !clickTaskElement) {
+        this.$modal({
+          slot: 'BaseModalConfirm',
+          slotProps: {
+            title: 'Сохранить изменения?',
+            description: this.localValue,
+            confirmLabel: 'Сохранить изменения',
+            cancelConfirm: 'Отменить изменения'
+          },
+
+          onConfirm: this.save,
+          onCancel: this.cancel,
+          onClose: this.$refs.baseTextareaRef.focus
+        })
+      }
     }
   }
 }
