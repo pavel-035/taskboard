@@ -12,15 +12,16 @@ export class Column {
 }
 
 export class ColumnHoverScroller {
-  constructor (column) {
+  constructor (column, scrollDataAttribute) {
     if (!(column instanceof Column)) throw new Error('column must be a Column')
     this.column = column
+    this.scrollDataAttribute = scrollDataAttribute
 
     this.scroller = null
   }
 
   init () {
-    const container = this.column.nodeElement.querySelector('[data-draggable-column-scroll]')
+    const container = this.column.nodeElement.querySelector(`[${this.scrollDataAttribute}]`)
 
     this.scroller = new ScrollOnHover({
       container,
@@ -53,13 +54,31 @@ export class ColumnHoverScroller {
   }
 
   destroy () {
-    this.scroller.destroy()
+    if (this.scroller) this.scroller.destroy()
   }
 }
 
 export class ColumnEventHandler {
   constructor (columnElement) {
     this.columnElement = columnElement
+
+    this.mouseMove = new EventHandler({
+      eventType: 'pointermove',
+      element: columnElement,
+      handler: (event, callback) => callback(event)
+    })
+
+    this.mouseDown = new EventHandler({
+      eventType: 'pointerdown',
+      element: columnElement,
+      handler: (event, callback) => callback(event)
+    })
+
+    this.mouseUp = new EventHandler({
+      eventType: 'pointerup',
+      element: columnElement,
+      handler: (event, callback) => callback(event)
+    })
 
     this.mouseEnter = new EventHandler({
       eventType: 'pointerenter',
@@ -72,40 +91,12 @@ export class ColumnEventHandler {
       element: columnElement,
       handler: (event, callback) => callback(event)
     })
-
-    this.focus = new EventHandler({
-      eventType: 'columnFocus',
-      element: columnElement,
-      handler: (event, callback) => callback(event)
-    })
-
-    this.blur = new EventHandler({
-      eventType: 'columnBlur',
-      element: columnElement,
-      handler: (event, callback) => callback(event)
-    })
-
-    this.init()
-  }
-
-  init () {
-    this.mouseEnter.addListener(() => {
-      const columnFocusEvent = new CustomEvent('columnFocus')
-
-      this.columnElement.dispatchEvent(columnFocusEvent)
-    })
-
-    this.mouseLeave.addListener(() => {
-      const columnFocusEvent = new CustomEvent('columnBlur')
-
-      this.columnElement.dispatchEvent(columnFocusEvent)
-    })
   }
 
   destroy () {
     this.mouseLeave.removeListener()
     this.mouseEnter.removeListener()
-    this.focus.removeListener()
-    this.blur.removeListener()
+    this.mouseDown.removeListener()
+    this.mouseUp.removeListener()
   }
 }

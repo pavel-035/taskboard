@@ -23,18 +23,22 @@ export class ActivatorEventHandler {
     this.mouseMove = new EventHandler({
       eventType: 'pointermove',
       element: container,
-      handler: (event, callback) => this.mouseMoveHandler(event, callback)
+      handler: (event, callback) => this._mouseMoveHandler(event, callback)
     })
     this.mouseLeave = new EventHandler({
       eventType: 'pointerleave',
       element: container,
-      handler: (event) => this.mouseLeaveHandler(event)
+      handler: (event) => this._mouseLeaveHandler(event)
     })
 
     this.focus = new EventHandler({
       eventType: 'activatorFocus',
       element: container,
-      handler: (event, callback) => callback(event)
+      handler: (event, callback) => {
+        if (event.detail.eventId === this.eventId) {
+          callback(event)
+        }
+      }
     })
     this.blur = new EventHandler({
       eventType: 'activatorBlur',
@@ -48,7 +52,11 @@ export class ActivatorEventHandler {
     this.hover = new EventHandler({
       eventType: 'activatorHover',
       element: container,
-      handler: (event, callback) => callback(event)
+      handler: (event, callback) => {
+        if (event.detail.eventId === this.eventId) {
+          callback(event)
+        }
+      }
     })
 
     this.init()
@@ -64,9 +72,10 @@ export class ActivatorEventHandler {
     this.mouseLeave.removeListener()
     this.focus.removeListener()
     this.blur.removeListener()
+    this.hover.removeListener()
   }
 
-  mouseMoveHandler (event) {
+  _mouseMoveHandler (event) {
     const containerRect = this.container.getBoundingClientRect()
     const containerRectOffsetPage = {
       left: containerRect.left + window.scrollX,
@@ -112,7 +121,7 @@ export class ActivatorEventHandler {
     }
   }
 
-  mouseLeaveHandler (event) {
+  _mouseLeaveHandler (event) {
     const columnEvent = new CustomEvent('activatorBlur', {
       detail: {
         eventId: this.eventId
@@ -138,6 +147,7 @@ export class ScrollOnHover {
     this.maxScrollSpeed = maxScrollSpeed
 
     this.activatorsList = []
+    this.activatorHandlers = []
   }
 
   add (activator) {
@@ -164,9 +174,10 @@ export class ScrollOnHover {
         scroll.scrollY(1)
       })
       activatorEvent.blur.addListener(() => {
-        console.log('blur')
         scroll.stop()
       })
+
+      this.activatorHandlers.push(activatorEvent)
     })
   }
 
@@ -174,6 +185,9 @@ export class ScrollOnHover {
     this.container = null
     this.maxScrollSpeed = null
     this.activatorsList.splice(0, this.activatorsList.length)
+
+    this.activatorHandlers.forEach(activator => activator.destroy())
+    this.activatorHandlers.splice(0, this.activatorHandlers.length)
   }
 
   _calculateScrollSpeed (mouse, rect, scrollTo) {

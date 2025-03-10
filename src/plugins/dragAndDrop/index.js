@@ -8,11 +8,13 @@ export default class {
     container,
     columnDataAttribute,
     cardDataAttribute,
+    scrollDataAttribute,
     onDrop
   }) {
     this.container = container
     this.columnDataAttribute = columnDataAttribute
     this.cardDataAttribute = cardDataAttribute
+    this.scrollDataAttribute = scrollDataAttribute
     this.onDropCallback = onDrop
 
     this.DOMManager = null
@@ -54,16 +56,25 @@ export default class {
   initEventHandlers () {
     this.colums.forEach(column => {
       column.nodeElement.style.touchAction = 'none'
-      const hoverScroller = new ColumnHoverScroller(column)
+
+      const hoverScroller = new ColumnHoverScroller(column, this.scrollDataAttribute)
       const columnEventHandler = new ColumnEventHandler(column.nodeElement)
 
-      columnEventHandler.focus.addListener(() => {
-        this.focusColumnId = column.id
+      columnEventHandler.mouseDown.addListener(() => {
         hoverScroller.init()
       })
-      columnEventHandler.blur.addListener(() => {
-        this.focusColumnId = null
+      columnEventHandler.mouseUp.addListener(() => {
         hoverScroller.destroy()
+      })
+      columnEventHandler.mouseEnter.addListener(() => {
+        this.focusColumnId = column.id
+
+        if (this.editCard) hoverScroller.init()
+      })
+      columnEventHandler.mouseLeave.addListener(() => {
+        this.focusColumnId = null
+
+        if (this.editCard) hoverScroller.destroy()
       })
 
       this.eventHandlers.push(columnEventHandler)

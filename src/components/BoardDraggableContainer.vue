@@ -21,8 +21,9 @@ export default {
   mounted () {
     this.dragAndDrop = new DragAndDrop({
       container: this.$refs.draggableContainerRef,
-      columnDataAttribute: 'data-draggable-column',
       cardDataAttribute: 'data-draggable-card',
+      columnDataAttribute: 'data-draggable-column',
+      scrollDataAttribute: 'data-draggable-column-scroll',
       onDrop: this.onDrop
     })
   },
