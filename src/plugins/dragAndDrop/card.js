@@ -1,4 +1,4 @@
-import { EventHandler } from './eventHandler'
+import { EventHandler } from '@/plugins/eventHandler'
 
 export class Card {
   constructor ({

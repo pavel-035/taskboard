@@ -1,5 +1,5 @@
 import { Card } from './card'
-import { EventHandler } from './eventHandler'
+import { EventHandler } from '@/plugins/eventHandler'
 import { DOMManager } from './DOMManager'
 
 export class DraggableCard extends Card {

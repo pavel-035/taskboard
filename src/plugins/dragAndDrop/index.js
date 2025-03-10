@@ -1,7 +1,7 @@
 import { CardEventHandlers } from './card'
 import { DOMManager } from './DOMManager'
 import { DraggableComponent } from './draggable'
-import { ColumnEventHandler } from './column'
+import { ColumnEventHandler, ColumnHoverScroller } from './column'
 
 export default class {
   constructor ({
@@ -54,10 +54,17 @@ export default class {
   initEventHandlers () {
     this.colums.forEach(column => {
       column.nodeElement.style.touchAction = 'none'
+      const hoverScroller = new ColumnHoverScroller(column)
       const columnEventHandler = new ColumnEventHandler(column.nodeElement)
 
-      columnEventHandler.focus.addListener(() => { this.focusColumnId = column.id })
-      columnEventHandler.blur.addListener(() => { this.focusColumnId = null })
+      columnEventHandler.focus.addListener(() => {
+        this.focusColumnId = column.id
+        hoverScroller.init()
+      })
+      columnEventHandler.blur.addListener(() => {
+        this.focusColumnId = null
+        hoverScroller.destroy()
+      })
 
       this.eventHandlers.push(columnEventHandler)
     })

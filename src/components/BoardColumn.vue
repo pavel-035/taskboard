@@ -10,7 +10,7 @@
 
       <div
         class="board-column__body"
-        data-js-drag-column-body
+        data-draggable-column-scroll
       >
         <board-task-container
           v-for="task in tasks"
