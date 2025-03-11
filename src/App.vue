@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <template v-if="!isLoad">
+    <base-loader v-if="isLoading" />
+
+    <template v-if="!isLoading">
       <router-view/>
     </template>
 
@@ -10,30 +12,28 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import BaseModalContainer from '@/components/BaseModalContainer.vue'
 import BaseAlertBar from '@/components/BaseAlertBar.vue'
+import BaseLoader from '@/components/BaseLoader.vue'
 
 export default {
   name: 'App',
   components: {
+    BaseLoader,
     BaseAlertBar,
     BaseModalContainer
   },
-  data () {
-    return {
-      isLoad: false
-    }
+  computed: {
+    ...mapGetters('loader', ['isLoading'])
   },
   async created () {
     try {
-      this.isLoad = true
-
       await this.ActionLoadTasks()
       await this.ActionLoadStatuses()
       await this.ActionLoadTasksByStatuses()
-    } finally {
-      this.isLoad = false
+    } catch (error) {
+      console.error(error)
     }
   },
   methods: {
