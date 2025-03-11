@@ -31,6 +31,25 @@ export class SmoothScroll {
     this._scrollY()
   }
 
+  _scrollX () {
+    if (Math.abs(this.container.scrollLeft - this.targetPosition.x) < 1) {
+      return this.stop()
+    }
+
+    this.container.scrollBy({ left: this.scrollSpeed })
+    this.animateId = requestAnimationFrame(this._scrollX.bind(this))
+  }
+
+  scrollX (direction) {
+    if (direction === 1) {
+      this.targetPosition.x = this.container.scrollWidth - this.container.clientWidth
+    } else {
+      this.targetPosition.x = 0
+    }
+
+    this._scrollX()
+  }
+
   stop () {
     if (this.animateId) {
       cancelAnimationFrame(this.animateId)

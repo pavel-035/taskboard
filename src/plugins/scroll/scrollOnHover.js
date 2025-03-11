@@ -167,11 +167,24 @@ export class ScrollOnHover {
       })
 
       activatorEvent.focus.addListener(() => {
-        if (activator.scrollTo === 'top' || activator.scrollTo === 'left') {
-          scroll.scrollY(-1)
-          return
+        switch (activator.scrollTo) {
+          case 'top': {
+            scroll.scrollY(-1)
+            break
+          }
+          case 'right': {
+            scroll.scrollX(1)
+            break
+          }
+          case 'bottom': {
+            scroll.scrollY(1)
+            break
+          }
+          case 'left': {
+            scroll.scrollX(-1)
+            break
+          }
         }
-        scroll.scrollY(1)
       })
       activatorEvent.blur.addListener(() => {
         scroll.stop()

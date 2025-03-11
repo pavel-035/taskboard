@@ -1,10 +1,8 @@
 <template>
   <div class="home">
     <board-draggable-container
+      ref="homeWrapperRef"
       class="home__wrapper"
-      :style="{
-        'width': wrapperWidth
-      }"
     >
       <board-column
         v-for="status in getTasksByStatuses"
@@ -16,6 +14,9 @@
 
         :tasks="status.tasks"
         class="home__column"
+        :style="{
+          'width': columnWidth
+        }"
 
         :data-draggable-column="status.id"
       />
@@ -36,30 +37,20 @@ export default {
   },
   data () {
     return {
-      statusesPerPage: null
+      columnWidth: null
     }
   },
-  created () {
-    let windowWidth = document.body.clientWidth
+  async mounted () {
+    await this.$nextTick()
 
-    this.statusesPerPage = this.calculateStatusesPerPage(windowWidth)
+    this.columnWidth = this.calculateColumnWidth()
 
-    window.addEventListener('resize', (event) => {
-      windowWidth = document.body.clientWidth
-
-      this.statusesPerPage = this.calculateStatusesPerPage(windowWidth)
+    window.addEventListener('resize', () => {
+      this.columnWidth = this.calculateColumnWidth()
     })
   },
   computed: {
-    ...mapGetters('statuses', ['getTasksByStatuses']),
-
-    wrapperWidth () {
-      const statusesCount = this.getTasksByStatuses.length
-      const statusWidth = 100 / this.statusesPerPage
-      const width = statusWidth * statusesCount
-
-      return width + '%'
-    }
+    ...mapGetters('statuses', ['getTasksByStatuses'])
   },
   methods: {
     calculateStatusesPerPage (windowWidth) {
@@ -74,6 +65,16 @@ export default {
       } else {
         return 1.2
       }
+    },
+    calculateColumnWidth () {
+      const wrapper = this.$refs.homeWrapperRef.$el
+      const wrapperWidth = wrapper.clientWidth
+      const windowWidth = document.body.clientWidth
+      const columnsPerPage = this.calculateStatusesPerPage(windowWidth)
+      const columnGap = 8
+      const columnWidth = (wrapperWidth / columnsPerPage) - columnGap
+
+      return columnWidth + 'px'
     }
   }
 }
@@ -81,25 +82,33 @@ export default {
 
 <style scoped lang="scss">
 .home {
+  height: 100vh;
+  padding: 52px;
+  box-sizing: border-box;
+  overflow: hidden;
   &__wrapper {
     display: flex;
     justify-content: space-between;
     column-gap: 8px;
 
-    height: 100vh;
-    padding: 52px;
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    height: 100%;
     box-sizing: border-box;
+
+    &::-webkit-scrollbar {
+      opacity: 0;
+    }
   }
   &__column {
-    flex: 1;
+    flex-shrink: 0;
   }
 }
 
 @media all and (max-width: $laptop_md)  {
   .home {
-    &__wrapper {
-      padding: 10px;
-    }
+    padding: 10px;
   }
 }
 </style>

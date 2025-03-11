@@ -1,7 +1,8 @@
 import { CardEventHandlers } from './card'
 import { DOMManager } from './DOMManager'
 import { DraggableComponent } from './draggable'
-import { ColumnEventHandler, ColumnHoverScroller } from './column'
+import { ColumnEventHandler } from './column'
+import { ContainerHoverScroller, ColumnHoverScroller } from './scroller'
 
 export default class {
   constructor ({
@@ -80,14 +81,17 @@ export default class {
       this.eventHandlers.push(columnEventHandler)
     })
 
+    const hoverScroller = new ContainerHoverScroller(this.container)
     const cardEventHandlers = new CardEventHandlers(this.container, this.cardDataAttribute)
 
     cardEventHandlers.mouseDown.addListener((event, target) => {
       this.onMouseDown(event, target)
+      hoverScroller.init()
 
       cardEventHandlers.mouseUp.addListener(() => {
         this.onMouseUp()
         cardEventHandlers.mouseMove.removeListener()
+        hoverScroller.destroy()
       })
       cardEventHandlers.mouseMove.addListener((event, target, mouseOffset) => {
         this.onMouseMove(event, target, mouseOffset)
