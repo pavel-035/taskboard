@@ -41,6 +41,8 @@ export default {
       const editableTask = this.getTaskById(taskId)
 
       try {
+        this.dragAndDrop.disable = true
+
         const task = {
           status_id: statusId,
           order
@@ -50,6 +52,8 @@ export default {
         this.$alert('success', `Задача перемещена в "${status.label}"`, editableTask.description)
       } catch (error) {
         this.$alert('error', `Не удалось переместить задачу в "${status.label}"`, editableTask.description)
+      } finally {
+        this.dragAndDrop.disable = false
       }
     }
   },

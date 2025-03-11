@@ -43,22 +43,16 @@ export default {
   actions: {
     async loadStatuses ({ commit, dispatch }) {
       try {
-        dispatch('loader/startLoading', null, { root: true })
-
         const statuses = await api.statuses.fetchStatuses() ?? []
 
         commit('SET_STATUSES', statuses)
       } catch (error) {
         console.error('[STORE] Loading statuses', error)
         throw error
-      } finally {
-        dispatch('loader/stopLoading', null, { root: true })
       }
     },
     async loadTasksByStatuses ({ commit, dispatch }) {
       try {
-        dispatch('loader/startLoading', null, { root: true })
-
         const tasksByStatuses = await api.statuses.fetchTasksByStatuses()
 
         if (!tasksByStatuses.length) {
@@ -70,14 +64,10 @@ export default {
       } catch (error) {
         console.error('[STORE] Loading tasks by statuses', error)
         throw error
-      } finally {
-        dispatch('loader/stopLoading', null, { root: true })
       }
     },
     async generateStatuses ({ dispatch }) {
       try {
-        dispatch('loader/startLoading', null, { root: true })
-
         for (const status of defaultStatuses) {
           await api.statuses.addStatus(status)
         }
@@ -87,8 +77,6 @@ export default {
       } catch (error) {
         console.error('[STORE] Generating default statuses', error)
         throw error
-      } finally {
-        dispatch('loader/stopLoading', null, { root: true })
       }
     }
   },

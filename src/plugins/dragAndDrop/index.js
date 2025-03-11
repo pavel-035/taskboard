@@ -18,6 +18,8 @@ export default class {
     this.scrollDataAttribute = scrollDataAttribute
     this.onDropCallback = onDrop
 
+    this.disable = false
+
     this.DOMManager = null
     this.colums = []
     this.cards = []
@@ -85,6 +87,8 @@ export default class {
     const cardEventHandlers = new CardEventHandlers(this.container, this.cardDataAttribute)
 
     cardEventHandlers.mouseDown.addListener((event, target) => {
+      if (this.disable) return
+
       this.onMouseDown(event, target)
       hoverScroller.init()
 
