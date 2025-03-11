@@ -57,10 +57,31 @@ export default {
   bottom: 24px;
   z-index: 100;
 
-  max-width: 400px;
-  width: 100%;
+  width: 40%;
   &__element {
     margin-top: 20px;
+  }
+}
+
+@media all and (max-width: $laptop_md) {
+  .base-alert-bar {
+    right: 10px;
+    bottom: 10px;
+
+    width: 40%;
+    &__element {
+      margin-top: 10px;
+    }
+  }
+}
+@media all and (max-width: $tablet_md) {
+  .base-alert-bar {
+    width: 60%;
+  }
+}
+@media all and (max-width: $phone_lg) {
+  .base-alert-bar {
+    width: 95%;
   }
 }
 

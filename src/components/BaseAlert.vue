@@ -12,7 +12,7 @@
         <span class="base-alert__title">
           {{ title }}
         </span>
-        <pre class="base-alert__description">{{ description }}</pre>
+        <pre class="base-alert__description">{{ localDescription }}</pre>
       </div>
       <base-button
         class="base-alert__close"
@@ -57,6 +57,25 @@ export default {
         success: 'success',
         error: 'error'
       }
+    }
+  },
+  computed: {
+    localDescription () {
+      const maxLength = 100
+      const maxLines = 3
+
+      const description = this.description
+      const descriptionByLine = this.description.split('\n')
+      const result = this.description
+        .split('\n')
+        .slice(0, maxLines)
+        .join('\n')
+        .substring(0, maxLength)
+
+      if (description.length > maxLength || descriptionByLine.length > maxLines) {
+        return result + '...'
+      }
+      return result
     }
   }
 }
@@ -104,6 +123,7 @@ export default {
     padding: 0;
 
     white-space: pre-wrap;
+    overflow-wrap: anywhere;
 
     color: #1C2530;
     font-weight: 400;
