@@ -53,6 +53,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    column-gap: 8px;
     z-index: 1;
 
     padding: 8px;
@@ -69,6 +70,7 @@ export default {
   &__description {
     margin: 0;
     white-space: pre-wrap;
+    overflow-wrap: anywhere;
 
     font-weight: 400;
     font-size: 14px;
