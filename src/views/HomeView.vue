@@ -14,9 +14,6 @@
 
         :tasks="status.tasks"
         class="home__column"
-        :style="{
-          'width': columnWidth
-        }"
 
         :data-draggable-column="status.id"
       />
@@ -35,47 +32,8 @@ export default {
     BoardDraggableContainer,
     BoardColumn
   },
-  data () {
-    return {
-      columnWidth: null
-    }
-  },
-  async mounted () {
-    await this.$nextTick()
-
-    this.columnWidth = this.calculateColumnWidth()
-
-    window.addEventListener('resize', () => {
-      this.columnWidth = this.calculateColumnWidth()
-    })
-  },
   computed: {
     ...mapGetters('statuses', ['getTasksByStatuses'])
-  },
-  methods: {
-    calculateStatusesPerPage (windowWidth) {
-      if (windowWidth >= 1024) {
-        return 5
-      } else if (windowWidth >= 768) {
-        return 4.2
-      } else if (windowWidth >= 576) {
-        return 3.2
-      } else if (windowWidth >= 400) {
-        return 2.2
-      } else {
-        return 1.2
-      }
-    },
-    calculateColumnWidth () {
-      const wrapper = this.$refs.homeWrapperRef.$el
-      const wrapperWidth = wrapper.clientWidth
-      const windowWidth = document.body.clientWidth
-      const columnsPerPage = this.calculateStatusesPerPage(windowWidth)
-      const columnGap = 8
-      const columnWidth = (wrapperWidth / columnsPerPage) - columnGap
-
-      return columnWidth + 'px'
-    }
   }
 }
 </script>
@@ -102,6 +60,7 @@ export default {
     }
   }
   &__column {
+    width: calc(100% / 5 - 8px);
     flex-shrink: 0;
   }
 }
@@ -109,6 +68,35 @@ export default {
 @media all and (max-width: $laptop_md)  {
   .home {
     padding: 10px;
+  }
+}
+
+@media all and (max-width: $tablet_lg)  {
+  .home {
+    &__column {
+      width: calc(100% / 4.2 - 8px);
+    }
+  }
+}
+@media all and (max-width: $tablet_md)  {
+  .home {
+    &__column {
+      width: calc(100% / 3.2 - 8px);
+    }
+  }
+}
+@media all and (max-width: $phone_lg)  {
+  .home {
+    &__column {
+      width: calc(100% / 2.2 - 8px);
+    }
+  }
+}
+@media all and (max-width: $phone_sm)  {
+  .home {
+    &__column {
+      width: calc(100% / 1.2 - 8px);
+    }
   }
 }
 </style>
