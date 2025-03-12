@@ -92,17 +92,36 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
 
+    width: 30%;
     padding: 22px;
 
     border-radius: 8px;
     background: #FFFFFF;
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.06);
   }
-  &__header {
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-    margin-bottom: 16px;
+}
+
+@media all and (max-width: $laptop_lg) {
+  .base-modal {
+    &__wrapper {
+      width: 40%;
+    }
+  }
+}
+
+@media all and (max-width: $tablet_lg) {
+  .base-modal {
+    &__wrapper {
+      width: 60%;
+    }
+  }
+}
+
+@media all and (max-width: $phone_lg) {
+  .base-modal {
+    &__wrapper {
+      width: 80%;
+    }
   }
 }
 </style>

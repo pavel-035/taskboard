@@ -66,10 +66,6 @@ export default {
 
 <style scoped lang="scss">
 .base-modal-confirm {
-  &__wrapper {
-    width: 400px;
-  }
-
   &__header {
     display: flex;
     justify-content: space-between;
@@ -86,6 +82,7 @@ export default {
   &__description {
     margin: 24px 0;
     white-space: pre-wrap;
+    overflow-wrap: anywhere;
   }
 
   &__footer {
@@ -95,5 +92,25 @@ export default {
   &__button {
     width: calc(100% / 2 - 16px);
   }
+}
+
+@media all and (max-width: $phone_lg) {
+  .base-modal-confirm {
+    &__wrapper {
+    }
+    &__title {
+      font-size: 24px;
+      line-height: 30px;
+    }
+
+    &__description {
+      margin: 24px 0;
+    }
+
+    &__footer {
+      column-gap: 16px;
+    }
+  }
+
 }
 </style>
