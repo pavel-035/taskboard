@@ -11,6 +11,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+
 import BaseModalContainer from '@/components/BaseModalContainer.vue'
 import BaseAlertBar from '@/components/BaseAlertBar.vue'
 
