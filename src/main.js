@@ -4,8 +4,6 @@ import store from './store'
 
 import AlertService from '@/plugins/alertService'
 import ModalService from '@/plugins/modalService'
-import '@/assets/styles/fonts.css'
-import '@/assets/styles/index.scss'
 
 import router from './router'
 import indexDB from '@/indexDB'

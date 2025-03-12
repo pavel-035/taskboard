@@ -21,7 +21,9 @@ module.exports = defineConfig({
     loaderOptions: {
       sass: {
         additionalData: `
-          @import "@/assets/styles/variables.scss";
+          @use "@/assets/styles/variables.scss" as *;
+          @use "@/assets/styles/fonts.css" as *;
+          @use "@/assets/styles/index.scss" as *;
         `
       }
     }
