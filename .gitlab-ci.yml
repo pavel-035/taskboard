@@ -6,10 +6,7 @@ pages: # задание должно быть именованными стра�
   script:
     - npm ci
     - npm run build
-    - mv public public-vue # GitLab Pages хук для каталога public
-    - mv dist public # переименование каталога dist (результат команды npm run build)
-    # опционально, можно активировать поддержку gzip с помощью следующей строки:
-    - find public -type f -regex '.*\.\(htm\|html\|txt\|text\|js\|css\)$' -exec gzip -f -k {} \;
+    - mv dist/* public/
   artifacts:
     paths:
       - public # путь к артефакту должен быть /public для GitLab Pages
