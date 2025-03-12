@@ -8,6 +8,9 @@ import ModalService from '@/plugins/modalService'
 import router from './router'
 import indexDB from '@/indexDB'
 
+import '@/assets/styles/index.scss'
+import '@/assets/styles/fonts.css'
+
 Vue.config.productionTip = false
 
 Vue.use(AlertService)

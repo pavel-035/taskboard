@@ -94,12 +94,10 @@ export class DraggableStyleManager {
     element.style.pointerEvents = 'none'
 
     document.body.style.userSelect = 'none'
-    document.body.style.overflow = 'hidden'
   }
 
   static dropGrabbingStyle () {
     document.body.style.userSelect = 'inherit'
-    document.body.style.overflow = 'auto'
   }
 
   static setWidth (element, width) {

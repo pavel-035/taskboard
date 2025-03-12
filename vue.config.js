@@ -24,8 +24,6 @@ module.exports = defineConfig({
       sass: {
         additionalData: `
           @use "@/assets/styles/variables.scss" as *;
-          @use "@/assets/styles/fonts.css" as *;
-          @use "@/assets/styles/index.scss" as *;
         `
       }
     }
