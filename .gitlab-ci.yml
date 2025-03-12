@@ -6,7 +6,7 @@ pages: # задание должно быть именованными стра�
   script:
     - npm ci
     - npm run build
-    - mv dist/* public/
+    - mv dist/* public/taskboard/
   artifacts:
     paths:
       - public # путь к артефакту должен быть /public для GitLab Pages
