@@ -1,9 +1,6 @@
 <template>
   <div class="home">
-    <board-draggable-container
-      ref="homeWrapperRef"
-      class="home__wrapper"
-    >
+    <board-draggable-container class="home__wrapper">
       <board-column
         v-for="status in getTasksByStatuses"
         :key="status.id"
